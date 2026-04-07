@@ -4,3 +4,5 @@ dist/
 .DS_Store
 *.log
 .env
+backup_completo.sql
+datos.sql
