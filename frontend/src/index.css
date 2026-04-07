@@ -1,0 +1,79 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
+:root {
+  --bg:       #07101E;
+  --sidebar:  #09152B;
+  --card:     #0D1C30;
+  --cardHov:  #112038;
+  --border:   #1A2E48;
+  --borderL:  #263D5A;
+  --gold:     #E5BC55;
+  --goldL:    #F2D27A;
+  --blue:     #3A80C2;
+  --purple:   #7A62D2;
+  --green:    #3BAD78;
+  --red:      #C44848;
+  --amber:    #C88020;
+  --text:     #DDD5C0;
+  --textS:    #7088A4;
+  --textM:    #6A82A0;
+}
+
+/* ── Modo claro ──────────────────────────────────────────────────────────── */
+body.light {
+  --bg:       #F0F4F8;
+  --sidebar:  #E2E8F0;
+  --card:     #FFFFFF;
+  --cardHov:  #F7FAFC;
+  --border:   #CBD5E0;
+  --borderL:  #A0AEC0;
+  --gold:     #B7881A;
+  --goldL:    #C8A035;
+  --blue:     #2B6CB0;
+  --purple:   #6B46C1;
+  --green:    #276749;
+  --red:      #C53030;
+  --amber:    #C05621;
+  --text:     #1A202C;
+  --textS:    #4A5568;
+  --textM:    #718096;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 20px;
+  line-height: 1.6;
+}
+
+input, textarea, select, button, span, div, p, label, a {
+  font-family: inherit;
+}
+
+/* Fuerza escala mínima — sobreescribe los fontSize hardcodeados pequeños */
+body * {
+  font-size: max(var(--applied-size, 1em), 15px);
+}
+
+/* Excepciones: títulos y números grandes no se recortan */
+h1, h2, h3,
+[style*="font-size: 2"],
+[style*="font-size: 3"],
+[style*="font-size: 4"] {
+  font-size: revert !important;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Scrollbar personalizada ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+::-webkit-scrollbar-corner { background: transparent; }

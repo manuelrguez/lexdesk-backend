@@ -1,0 +1,2 @@
+// Hook: useClaude
+// TODO: implementar
