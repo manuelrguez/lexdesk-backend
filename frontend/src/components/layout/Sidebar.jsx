@@ -1,12 +1,4 @@
-// ── typography.js ─────────────────────────────────────────────────────────
-export const font = {
-  display: "'Inter', sans-serif",
-  body:    "'Inter', sans-serif",
-  mono:    "'JetBrains Mono', 'Fira Code', monospace",
-}
 
-
-// ── Sidebar.jsx ───────────────────────────────────────────────────────────
 import { useState, useEffect, useRef } from 'react'
 import { Home, Users, FileText, Mail, Calendar, Globe, Receipt,
          LogOut, Sun, Moon, Bell, X, ChevronRight } from 'lucide-react'
