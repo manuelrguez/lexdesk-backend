@@ -8,11 +8,11 @@
   --cardHov:  #112038;
   --border:   #1A2E48;
   --borderL:  #263D5A;
-  --gold:     #E5BC55;
-  --goldL:    #F2D27A;
+  --gold:     #00C896;
+  --goldL:    #00E6AE;
   --blue:     #3A80C2;
   --purple:   #7A62D2;
-  --green:    #3BAD78;
+  --green:    #00C896;
   --red:      #C44848;
   --amber:    #C88020;
   --text:     #DDD5C0;
@@ -28,11 +28,11 @@ body.light {
   --cardHov:  #F7FAFC;
   --border:   #CBD5E0;
   --borderL:  #A0AEC0;
-  --gold:     #B7881A;
-  --goldL:    #C8A035;
+  --gold:     #00A87E;
+  --goldL:    #00C896;
   --blue:     #2B6CB0;
   --purple:   #6B46C1;
-  --green:    #276749;
+  --green:    #00A87E;
   --red:      #C53030;
   --amber:    #C05621;
   --text:     #1A202C;
@@ -52,12 +52,10 @@ input, textarea, select, button, span, div, p, label, a {
   font-family: inherit;
 }
 
-/* Fuerza escala mínima — sobreescribe los fontSize hardcodeados pequeños */
 body * {
   font-size: max(var(--applied-size, 1em), 15px);
 }
 
-/* Excepciones: títulos y números grandes no se recortan */
 h1, h2, h3,
 [style*="font-size: 2"],
 [style*="font-size: 3"],
@@ -66,6 +64,10 @@ h1, h2, h3,
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 6px #00C89666, 0 0 12px #00C89633; }
+  50%       { box-shadow: 0 0 14px #00C896AA, 0 0 28px #00C89655; }
+}
 
 /* ── Scrollbar personalizada ─────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }

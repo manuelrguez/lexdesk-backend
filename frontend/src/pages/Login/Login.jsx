@@ -19,7 +19,7 @@ const inputStyle = {
 
 export const Login = () => {
   const dispatch  = useDispatch()
-  const [mode,    setMode]    = useState('perfiles')  // 'perfiles' | 'form'
+  const [mode,    setMode]    = useState('perfiles')
   const [email,   setEmail]   = useState('')
   const [pass,    setPass]    = useState('')
   const [loading, setLoading] = useState(false)
@@ -36,18 +36,8 @@ export const Login = () => {
     } finally { setLoading(false) }
   }
 
-  const handleProfileClick = (u) => {
-    if (loading) return
-    setEmail(u.email)
-    setMode('form')
-  }
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault()
-    if (!email || !pass) return
-    doLogin(email, pass)
-  }
-
+  const handleProfileClick = (u) => { if (loading) return; setEmail(u.email); setMode('form') }
+  const handleFormSubmit   = (e)  => { e.preventDefault(); if (!email || !pass) return; doLogin(email, pass) }
   const selectedUser = USERS_HINT.find(u => u.email === email)
 
   return (
@@ -55,13 +45,20 @@ export const Login = () => {
       flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       fontFamily: font.body }}>
 
-      {/* Logo */}
+      {/* Logo Herion */}
       <div style={{ marginBottom: 12, textAlign: 'center' }}>
-        <div style={{ fontSize: 14, color: C.gold, letterSpacing: 4, marginBottom: 10, textTransform: 'uppercase' }}>
-          Despacho Jurídico
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 8 }}>
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12L9 18L21 6" stroke="#00C896" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span style={{ fontFamily: font.display, fontSize: 52, color: 'var(--text)',
+            fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
+            Herion
+          </span>
         </div>
-        <div style={{ fontFamily: font.display, fontSize: 52, color: 'var(--text)', fontWeight: 600, letterSpacing: 2 }}>
-          <span style={{ color: C.gold }}>⚖</span> LexDesk Pro
+        <div style={{ color: C.gold, fontSize: 13, letterSpacing: 6,
+          textTransform: 'uppercase', marginBottom: 6 }}>
+          Law
         </div>
         <div style={{ color: 'var(--textM)', fontSize: 14, marginTop: 6, letterSpacing: 1 }}>
           Sistema de Gestión Legal Integral con IA
@@ -87,21 +84,23 @@ export const Login = () => {
                 onMouseEnter={() => setHovered(u.email)}
                 onMouseLeave={() => setHovered(null)}
                 style={{ background: 'var(--card)',
-                  border: `1px solid ${hovered === u.email ? u.color : C.border}`,
+                  border: `1px solid ${hovered === u.email ? C.gold : C.border}`,
                   borderRadius: 12, padding: '32px 36px', textAlign: 'center',
                   cursor: 'pointer', minWidth: 190,
-                  boxShadow: hovered === u.email ? `0 0 20px ${u.color}30` : 'none',
+                  boxShadow: hovered === u.email ? `0 0 20px ${C.gold}40, 0 0 40px ${C.gold}20` : 'none',
                   transform: hovered === u.email ? 'translateY(-2px)' : 'none',
                   transition: 'all 0.2s' }}>
                 <div style={{ width: 64, height: 64, borderRadius: '50%',
-                  background: u.color + '22', border: `1.5px solid ${u.color}`,
+                  background: C.gold + '22', border: `1.5px solid ${C.gold}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 22, fontWeight: 700, color: u.color, margin: '0 auto' }}>
+                  fontSize: 22, fontWeight: 700, color: C.gold, margin: '0 auto',
+                  boxShadow: hovered === u.email ? `0 0 12px ${C.gold}55` : 'none',
+                  transition: 'all 0.2s' }}>
                   {u.short}
                 </div>
                 <div style={{ color: 'var(--text)', fontWeight: 600, fontSize: 17, marginTop: 16 }}>{u.name}</div>
                 <div style={{ color: C.textS, fontSize: 13, marginTop: 4 }}>{u.role}</div>
-                <div style={{ marginTop: 16, color: u.color, fontSize: 12 }}>Acceder →</div>
+                <div style={{ marginTop: 16, color: C.gold, fontSize: 12 }}>Acceder →</div>
               </div>
             ))}
           </div>
@@ -124,11 +123,11 @@ export const Login = () => {
           {selectedUser && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 14,
               marginBottom: 28, padding: '14px 16px', background: 'var(--bg)',
-              borderRadius: 10, border: `1px solid ${selectedUser.color}44` }}>
+              borderRadius: 10, border: `1px solid ${C.gold}44` }}>
               <div style={{ width: 44, height: 44, borderRadius: '50%',
-                background: selectedUser.color + '22', border: `1.5px solid ${selectedUser.color}`,
+                background: C.gold + '22', border: `1.5px solid ${C.gold}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 16, fontWeight: 700, color: selectedUser.color }}>
+                fontSize: 16, fontWeight: 700, color: C.gold }}>
                 {selectedUser.short}
               </div>
               <div>
@@ -140,24 +139,22 @@ export const Login = () => {
 
           <form onSubmit={handleFormSubmit}>
             <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 6 }}>
-                Email
-              </label>
+              <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 6 }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="usuario@lexdesk.es" style={inputStyle} required />
             </div>
             <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 6 }}>
-                Contraseña
-              </label>
+              <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 6 }}>Contraseña</label>
               <input type="password" value={pass} onChange={e => setPass(e.target.value)}
                 placeholder="••••••••" style={inputStyle} required autoFocus />
             </div>
             <button type="submit" disabled={loading || !email || !pass}
-              style={{ width: '100%', background: loading ? C.textM : C.gold,
+              style={{ width: '100%',
+                background: loading ? C.textM : C.gold,
                 color: '#07101E', border: 'none', borderRadius: 8, padding: '12px',
                 cursor: loading ? 'wait' : 'pointer', fontWeight: 700, fontSize: 15,
-                marginBottom: 14 }}>
+                marginBottom: 14, transition: 'all 0.2s',
+                boxShadow: !loading ? `0 0 12px ${C.gold}55` : 'none' }}>
               {loading ? 'Accediendo...' : 'Iniciar sesión'}
             </button>
           </form>
