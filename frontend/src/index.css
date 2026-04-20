@@ -4,14 +4,14 @@
 
 /* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
 :root {
-  --bg:       #0d0d0d;
-  --sidebar:  #111111;
-  --card:     #181818;
-  --cardHov:  #1f1f1f;
-  --border:   #2a2a2a;
-  --borderL:  #333333;
-  --gold:     #00C896;
-  --goldL:    #00E6AE;
+  --bg:       #0f1117;
+  --sidebar:  #141720;
+  --card:     #1a1d27;
+  --cardHov:  #1f2330;
+  --border:   #252936;
+  --borderL:  #2e3444;
+  --gold:     #00D4A0;
+  --goldL:    #00EDBB;
   --blue:     #3A80C2;
   --purple:   #7A62D2;
   --green:    #00C896;
@@ -57,8 +57,8 @@ input, textarea, select, button, span, div, p, label, a {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 6px #00C89666, 0 0 12px #00C89633; }
-  50%       { box-shadow: 0 0 14px #00C896AA, 0 0 28px #00C89655; }
+  0%, 100% { box-shadow: 0 0 6px #00D4A066, 0 0 12px #00D4A033; }
+  50%       { box-shadow: 0 0 14px #00D4A0AA, 0 0 28px #00D4A055; }
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────── */
