@@ -156,7 +156,7 @@ export const Sidebar = ({ active, setActive, isDark, onToggleTheme }) => {
         <div style={{ padding: '20px 20px 16px', borderBottom: `1px solid ${C.border}`,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <img src="/logo-herion.png" alt="Herion" style={{ height: 22, objectFit: 'contain', objectPosition: 'left' }} />
+            <img src={isDark ? "/logo-herion.png" : "/logo-dark-herion.png"} alt="Herion" style={{ height: 22, objectFit: 'contain', objectPosition: 'left' }} />
             <div style={{ color: C.gold, fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', paddingLeft: 2 }}>
               Law
             </div>

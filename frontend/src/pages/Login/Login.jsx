@@ -4,6 +4,7 @@ import { login } from '../../store/authSlice.js'
 import { authService } from '../../services/auth.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
+import { useTheme } from '../../context/ThemeContext'
 
 const USERS_HINT = [
   { email: 'maria@lexdesk.es',  name: 'María García',     role: 'Abogada Senior', color: C.gold,   short: 'MG' },
@@ -21,6 +22,8 @@ const inputStyle = {
 
 export const Login = () => {
   const dispatch  = useDispatch()
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const [mode,    setMode]    = useState('perfiles')
   const [email,   setEmail]   = useState('')
   const [pass,    setPass]    = useState('')
@@ -50,7 +53,7 @@ export const Login = () => {
       {/* Logo */}
       <div style={{ marginBottom: 8, textAlign: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-          <img src="/logo-herion.png" alt="Herion" style={{ height: 42, objectFit: 'contain' }} />
+          <img src={isDark ? "/logo-herion.png" : "/logo-dark-herion.png"} alt="Herion" style={{ height: 42, objectFit: 'contain' }} />
         </div>
         <div style={{ color: C.gold, fontSize: 11, letterSpacing: 6,
           textTransform: 'uppercase', marginBottom: 8 }}>
