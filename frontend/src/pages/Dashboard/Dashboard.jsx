@@ -65,8 +65,8 @@ export const Dashboard = ({ setActive }) => {
     const hoy  = new Date(); hoy.setHours(0,0,0,0)
     const dest = new Date(fecha + 'T00:00:00')
     const diff = Math.round((dest - hoy) / 86400000)
-    if (diff === 0) return { label: 'Hoy',    col: C.gold   }
-    if (diff === 1) return { label: 'Mañana', col: C.gold }
+    if (diff === 0) return { label: 'Hoy',    col: C.red   }
+    if (diff === 1) return { label: 'Mañana', col: C.amber }
     if (diff <= 7)  return { label: `${diff}d`, col: C.gold }
     return { label: `${diff}d`, col: C.textM }
   }
