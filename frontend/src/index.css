@@ -4,12 +4,12 @@
 
 /* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
 :root {
-  --bg:       #0a0a0a;
-  --sidebar:  #0d0d0d;
-  --card:     #131313;
-  --cardHov:  #1a1a1a;
-  --border:   #222222;
-  --borderL:  #2e2e2e;
+  --bg:       #000000;
+  --sidebar:  #000000;
+  --card:     #0f1011;
+  --cardHov:  #161718;
+  --border:   #1e1e1e;
+  --borderL:  #2a2a2a;
   --gold:     #2bffff;
   --goldL:    #6fffff;
   --blue:     #3A80C2;
@@ -17,9 +17,9 @@
   --green:    #2bffff;
   --red:      #E05555;
   --amber:    #E09020;
-  --text:     #f0f0f0;
-  --textS:    #777777;
-  --textM:    #555555;
+  --text:     #ffffff;
+  --textS:    #666666;
+  --textM:    #444444;
 }
 
 /* ── Modo claro ──────────────────────────────────────────────────────────── */
@@ -50,30 +50,6 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-
-/* Fondo con gradiente Herion sobre el negro base */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(180deg, #000000 0%, #0f1011 50%, #000000 100%);
-  z-index: -2;
-}
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    #2bffff1f 0%,
-    #2bffff0a 50%,
-    #2bffff12 100%
-  );
-  z-index: -1;
-  pointer-events: none;
-}
-body.light::before { background: #f4f4f4; }
-body.light::after  { background: none; }
 
 input, textarea, select, button, span, div, p, label, a {
   font-family: 'Inter', sans-serif;
