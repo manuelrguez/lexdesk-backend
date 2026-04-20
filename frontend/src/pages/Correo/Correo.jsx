@@ -350,7 +350,7 @@ export const Correo = () => {
             <MessageSquare size={14} /> Resumen diario WhatsApp
           </div>
           <button onClick={handleSummary} disabled={sumLoading || emails.length === 0}
-            style={btn('#25D366', { width: '100%', justifyContent: 'center',
+            style={btn(C.gold, { width: '100%', justifyContent: 'center',
               opacity: emails.length === 0 ? 0.5 : 1 })}>
             <Zap size={14} />
             {sumLoading ? 'Generando con IA...' : 'Generar resumen'}
@@ -358,7 +358,7 @@ export const Correo = () => {
           {summary && (
             <div style={{ marginTop: 14, background: '#25D36614',
               border: '1px solid #25D36640', borderRadius: 10, padding: 16 }}>
-              <div style={{ color: '#25D366', fontSize: 12, marginBottom: 8,
+              <div style={{ color: C.gold, fontSize: 12, marginBottom: 8,
                 display: 'flex', alignItems: 'center', gap: 5 }}>
                 <CheckCircle size={13} /> PREVIEW WHATSAPP
               </div>

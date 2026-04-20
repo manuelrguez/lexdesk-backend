@@ -13,9 +13,9 @@ const card = (extra = {}) => ({
 
 const fmt = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €'
 
-const tipoC = { juicio: C.red, plazo: C.gold, señalamiento: C.gold, reunion: C.green, otro: C.purple }
+const tipoC = { juicio: C.gold, plazo: C.gold, señalamiento: C.gold, reunion: C.gold, otro: C.gold }
 const tipoI = { juicio: '⚖', plazo: '⏰', señalamiento: '📋', reunion: '👥', otro: '📌' }
-const estadoCol = { Pagada: C.green, Pendiente: C.gold, Emitida: C.gold }
+const estadoCol = { Pagada: C.gold, Pendiente: C.gold, Emitida: C.gold }
 
 const Stat = ({ icon: Icon, label, val, sub, col, loading }) => (
   <div style={card({ flex: 1 })}>
@@ -65,7 +65,7 @@ export const Dashboard = ({ setActive }) => {
     const hoy  = new Date(); hoy.setHours(0,0,0,0)
     const dest = new Date(fecha + 'T00:00:00')
     const diff = Math.round((dest - hoy) / 86400000)
-    if (diff === 0) return { label: 'Hoy',    col: C.red   }
+    if (diff === 0) return { label: 'Hoy',    col: C.gold   }
     if (diff === 1) return { label: 'Mañana', col: C.gold }
     if (diff <= 7)  return { label: `${diff}d`, col: C.gold }
     return { label: `${diff}d`, col: C.textM }
@@ -299,8 +299,8 @@ export const Dashboard = ({ setActive }) => {
                 <div style={{ color: C.text, fontSize: 15 }}>{label}</div>
                 <div style={{ color: C.textM, fontSize: 13 }}>{note}</div>
               </div>
-              <span style={{ fontSize: 13, color: ok ? C.green : C.gold,
-                background: (ok ? C.green : C.gold) + '22',
+              <span style={{ fontSize: 13, color: ok ? C.gold : C.gold,
+                background: (ok ? C.gold : C.gold) + '22',
                 padding: '3px 10px', borderRadius: 10, whiteSpace: 'nowrap' }}>
                 {ok ? '✓ Activo' : '— Pendiente'}
               </span>

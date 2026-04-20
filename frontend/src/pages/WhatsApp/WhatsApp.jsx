@@ -8,7 +8,7 @@ const card = (extra = {}) => ({
   background: C.card, border: `1px solid ${C.border}`,
   borderRadius: 12, padding: 20, ...extra,
 })
-const btn = (col = '#25D366', extra = {}) => ({
+const btn = (col = C.gold, extra = {}) => ({
   background: col, color: col === C.gold ? '#07101E' : '#fff',
   border: 'none', borderRadius: 8, padding: '9px 18px',
   cursor: 'pointer', fontWeight: 700, fontSize: 13,
@@ -70,7 +70,7 @@ export const WhatsApp = () => {
           </div>
         </div>
         <button onClick={handleSummary} disabled={sumLoad}
-          style={btn('#25D366', { fontSize: 13 })}>
+          style={btn(C.gold, { fontSize: 13 })}>
           <Zap size={15} />
           {sumLoad ? 'Enviando...' : 'Enviar resumen diario'}
         </button>
@@ -116,14 +116,14 @@ export const WhatsApp = () => {
                 outline: 'none', boxSizing: 'border-box', resize: 'vertical', marginBottom: 12 }} />
 
             <button onClick={handleSend} disabled={sending || !to || !message}
-              style={btn('#25D366', { opacity: (!to || !message) ? 0.5 : 1, justifyContent: 'center', width: '100%' })}>
+              style={btn(C.gold, { opacity: (!to || !message) ? 0.5 : 1, justifyContent: 'center', width: '100%' })}>
               <Send size={14} />
               {sending ? 'Enviando...' : 'Enviar mensaje'}
             </button>
           </div>
 
           {/* Resumen automático */}
-          <div style={{ ...card(), borderLeft: `3px solid #25D366` }}>
+          <div style={{ ...card(), borderLeft: `3px solid #2bffff` }}>
             <div style={{ color: C.textS, fontSize: 11, marginBottom: 12,
               textTransform: 'uppercase', letterSpacing: 1 }}>
               Resumen diario automático
@@ -135,7 +135,7 @@ export const WhatsApp = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ color: C.green, fontSize: 12 }}>✓ Cron activo — Europe/Madrid</span>
               <button onClick={handleSummary} disabled={sumLoad}
-                style={btn('#25D366', { fontSize: 11, padding: '5px 12px' })}>
+                style={btn(C.gold, { fontSize: 11, padding: '5px 12px' })}>
                 <Zap size={12} /> Enviar ahora
               </button>
             </div>
