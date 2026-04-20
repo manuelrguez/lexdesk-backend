@@ -299,8 +299,8 @@ export const Dashboard = ({ setActive }) => {
                 <div style={{ color: C.text, fontSize: 15 }}>{label}</div>
                 <div style={{ color: C.textM, fontSize: 13 }}>{note}</div>
               </div>
-              <span style={{ fontSize: 13, color: ok ? C.gold : C.gold,
-                background: (ok ? C.gold : C.gold) + '22',
+              <span style={{ fontSize: 13, color: ok ? C.gold : C.amber,
+                background: (ok ? C.gold : C.amber) + '22',
                 padding: '3px 10px', borderRadius: 10, whiteSpace: 'nowrap' }}>
                 {ok ? '✓ Activo' : '— Pendiente'}
               </span>
