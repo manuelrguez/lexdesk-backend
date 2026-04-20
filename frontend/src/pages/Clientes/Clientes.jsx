@@ -20,7 +20,7 @@ const inputStyle = {
   fontSize: 14, outline: 'none', boxSizing: 'border-box',
 }
 
-const estadoC  = { 'En curso': C.blue, 'Archivado': C.textM, 'Pendiente': C.amber }
+const estadoC  = { 'En curso': C.gold, 'Archivado': C.textM, 'Pendiente': C.gold }
 const EMPTY    = { nombre: '', nif: '', direccion: '', telefono: '', email: '', notas: '' }
 const PROC_EMPTY = { numero: '', tipo: '', juzgado: '', estado: 'En curso', proxima_act: '' }
 
@@ -263,7 +263,7 @@ export const Clientes = () => {
                   <div style={{ color: C.text, fontSize: 14 }}>{p.tipo || '—'}</div>
                   <div style={{ color: C.textM, fontSize: 13, marginTop: 3 }}>{p.juzgado || '—'}</div>
                   {p.proxima_act && (
-                    <div style={{ color: C.amber, fontSize: 13, marginTop: 8 }}>
+                    <div style={{ color: C.gold, fontSize: 13, marginTop: 8 }}>
                       📅 {new Date(p.proxima_act).toLocaleDateString('es-ES')}
                     </div>
                   )}

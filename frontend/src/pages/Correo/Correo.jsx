@@ -19,8 +19,8 @@ const btn = (col = C.gold, extra = {}) => ({
 
 const TIPO_META = {
   lexnet:   { label: 'LexNet',   col: C.gold  },
-  judicial: { label: 'Judicial', col: C.blue  },
-  cliente:  { label: 'Cliente',  col: C.green },
+  judicial: { label: 'Judicial', col: C.gold  },
+  cliente:  { label: 'Cliente',  col: C.gold },
   otro:     { label: 'Otro',     col: C.textS },
 }
 

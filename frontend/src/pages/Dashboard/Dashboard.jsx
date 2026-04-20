@@ -13,9 +13,9 @@ const card = (extra = {}) => ({
 
 const fmt = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €'
 
-const tipoC = { juicio: C.red, plazo: C.amber, señalamiento: C.blue, reunion: C.green, otro: C.purple }
+const tipoC = { juicio: C.red, plazo: C.gold, señalamiento: C.gold, reunion: C.green, otro: C.purple }
 const tipoI = { juicio: '⚖', plazo: '⏰', señalamiento: '📋', reunion: '👥', otro: '📌' }
-const estadoCol = { Pagada: C.green, Pendiente: C.amber, Emitida: C.blue }
+const estadoCol = { Pagada: C.green, Pendiente: C.gold, Emitida: C.gold }
 
 const Stat = ({ icon: Icon, label, val, sub, col, loading }) => (
   <div style={card({ flex: 1 })}>
@@ -66,8 +66,8 @@ export const Dashboard = ({ setActive }) => {
     const dest = new Date(fecha + 'T00:00:00')
     const diff = Math.round((dest - hoy) / 86400000)
     if (diff === 0) return { label: 'Hoy',    col: C.red   }
-    if (diff === 1) return { label: 'Mañana', col: C.amber }
-    if (diff <= 7)  return { label: `${diff}d`, col: C.amber }
+    if (diff === 1) return { label: 'Mañana', col: C.gold }
+    if (diff <= 7)  return { label: `${diff}d`, col: C.gold }
     return { label: `${diff}d`, col: C.textM }
   }
 
@@ -167,7 +167,7 @@ export const Dashboard = ({ setActive }) => {
         {/* Columna derecha */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Pendiente de cobro */}
-          <div style={{ ...card(), borderLeft: `3px solid ${C.amber}` }}>
+          <div style={{ ...card(), borderLeft: `3px solid ${C.gold}` }}>
             <div style={{ color: C.textS, fontSize: 13, marginBottom: 10,
               textTransform: 'uppercase', letterSpacing: 1 }}>
               Pendiente de cobro
@@ -271,7 +271,7 @@ export const Dashboard = ({ setActive }) => {
                 <div style={{ color: C.textM, fontSize: 13, marginTop: 2 }}>{d.cliente_nombre || '—'}</div>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                <span style={{ fontSize: 12, color: C.blue, background: C.blue + '22',
+                <span style={{ fontSize: 12, color: C.gold, background: C.gold + '22',
                   padding: '2px 8px', borderRadius: 8 }}>{d.tipo}</span>
                 <div style={{ color: C.textM, fontSize: 13, marginTop: 4 }}>
                   {new Date(d.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
@@ -299,8 +299,8 @@ export const Dashboard = ({ setActive }) => {
                 <div style={{ color: C.text, fontSize: 15 }}>{label}</div>
                 <div style={{ color: C.textM, fontSize: 13 }}>{note}</div>
               </div>
-              <span style={{ fontSize: 13, color: ok ? C.green : C.amber,
-                background: (ok ? C.green : C.amber) + '22',
+              <span style={{ fontSize: 13, color: ok ? C.green : C.gold,
+                background: (ok ? C.green : C.gold) + '22',
                 padding: '3px 10px', borderRadius: 10, whiteSpace: 'nowrap' }}>
                 {ok ? '✓ Activo' : '— Pendiente'}
               </span>

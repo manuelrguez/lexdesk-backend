@@ -191,7 +191,7 @@ export const Perfil = () => {
 
         <div style={{ marginTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={handleChangePassword} disabled={savingPass}
-            style={btn(C.blue)}>
+            style={btn(C.gold)}>
             {savingPass ? 'Guardando...' : 'Cambiar contraseña'}
           </button>
         </div>

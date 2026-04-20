@@ -22,7 +22,7 @@ const inputStyle = {
 }
 
 const ESTADOS    = ['Emitida', 'Pendiente', 'Pagada']
-const estadoCol  = { Pagada: C.green, Pendiente: C.amber, Emitida: C.blue }
+const estadoCol  = { Pagada: C.gold, Pendiente: C.gold, Emitida: C.gold }
 const fmt        = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €'
 
 function FacturaModal({ factura, clientes, onSave, onClose }) {
@@ -210,7 +210,7 @@ export const Facturacion = () => {
         {[
           { icon: TrendingUp,  label: 'Total facturado',   val: fmt(totFact), col: C.gold   },
           { icon: CheckCircle, label: 'Cobrado',            val: fmt(totCob),  col: C.gold  },
-          { icon: Clock,       label: 'Pendiente de cobro', val: fmt(totPend), col: C.amber  },
+          { icon: Clock,       label: 'Pendiente de cobro', val: fmt(totPend), col: C.gold  },
           { icon: CreditCard,  label: 'IVA repercutido',    val: fmt(totIva),  col: C.gold },
         ].map(({ icon: Icon, label, val, col }) => (
           <div key={label} style={card()}>
@@ -283,7 +283,7 @@ export const Facturacion = () => {
                   <button onClick={() => handleExportPDF(f.id, f.numero, f.cliente_nombre)}
                     title="Descargar PDF"
                     style={{ background: 'none', border: 'none', color: C.textM, cursor: 'pointer', padding: 5 }}
-                    onMouseEnter={e => e.currentTarget.style.color = C.blue}
+                    onMouseEnter={e => e.currentTarget.style.color = C.gold}
                     onMouseLeave={e => e.currentTarget.style.color = C.textM}>
                     <Download size={14} />
                   </button>
@@ -326,12 +326,12 @@ export const Facturacion = () => {
                       tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
                     <Tooltip contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12 }}
                       labelStyle={{ color: C.text }} formatter={v => [fmt(v)]} />
-                    <Bar dataKey="fact" fill={C.blue}  radius={[4,4,0,0]} name="Facturado" />
-                    <Bar dataKey="cob"  fill={C.green} radius={[4,4,0,0]} name="Cobrado"   />
+                    <Bar dataKey="fact" fill={C.gold}  radius={[4,4,0,0]} name="Facturado" />
+                    <Bar dataKey="cob"  fill={C.gold} radius={[4,4,0,0]} name="Cobrado"   />
                   </BarChart>
                 </ResponsiveContainer>
                 <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 10 }}>
-                  {[[C.blue,'Facturado'],[C.green,'Cobrado']].map(([col,lab]) => (
+                  {[[C.gold,'Facturado'],[C.gold,'Cobrado']].map(([col,lab]) => (
                     <div key={lab} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <div style={{ width: 10, height: 10, borderRadius: 2, background: col }} />
                       <span style={{ color: C.textM, fontSize: 12 }}>{lab}</span>
@@ -350,8 +350,8 @@ export const Facturacion = () => {
               ['Base imponible',       facturas.reduce((a,f) => a + Number(f.base), 0), C.textS, false],
               ['IVA repercutido (21%)', totIva,  C.textS, false],
               ['Total facturado',       totFact, C.gold,  true],
-              ['Cobrado',               totCob,  C.green, false],
-              ['Pendiente',             totPend, C.amber, false],
+              ['Cobrado',               totCob,  C.gold, false],
+              ['Pendiente',             totPend, C.gold, false],
             ].map(([k, v, col, big], i) => (
               <div key={k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '8px 0', borderTop: i === 2 ? `1px solid ${C.border}` : 'none', marginTop: i === 2 ? 4 : 0 }}>

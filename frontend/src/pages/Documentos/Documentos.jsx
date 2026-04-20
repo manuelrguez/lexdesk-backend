@@ -20,7 +20,7 @@ const btn = (col = C.gold, extra = {}) => ({
 
 const TIPOS = ['Todos', 'Demanda', 'Notificación', 'Escrito', 'Auto', 'Recurso', 'Sentencia', 'Documento']
 const TIPOS_EDIT = TIPOS.filter(t => t !== 'Todos')
-const confianzaC = { alta: C.green, media: C.amber, baja: C.red }
+const confianzaC = { alta: C.green, media: C.gold, baja: C.red }
 
 // Obtener token para URLs directas (preview/download en iframe/anchor)
 const getToken = () => {
@@ -125,7 +125,7 @@ function PreviewPanel({ doc, onClose }) {
         <div style={{ display: 'flex', gap: 6 }}>
           <a href={`${documentosService.getDownloadUrl(doc.id)}?token=${token}`}
             download={doc.nombre}
-            style={btn(C.blue, { textDecoration: 'none' })}>
+            style={btn(C.gold, { textDecoration: 'none' })}>
             <Download size={13} /> Descargar
           </a>
           <button onClick={onClose} style={{ background: 'none', border: 'none',
@@ -361,7 +361,7 @@ export const Documentos = () => {
                 onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = C.cardHov }}
                 onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <FileText size={15} color={isActive ? C.gold : C.blue} style={{ flexShrink: 0 }} />
+                  <FileText size={15} color={isActive ? C.gold : C.gold} style={{ flexShrink: 0 }} />
                   <div style={{ overflow: 'hidden' }}>
                     <div style={{ color: C.text, fontSize: 13, whiteSpace: 'nowrap',
                       overflow: 'hidden', textOverflow: 'ellipsis' }}>{d.nombre}</div>
@@ -376,7 +376,7 @@ export const Documentos = () => {
                   )}
                 </div>
                 <div>
-                  <span style={{ fontSize: 11, color: C.blue, background: C.blue + '22',
+                  <span style={{ fontSize: 11, color: C.gold, background: C.gold + '22',
                     padding: '2px 8px', borderRadius: 10 }}>{d.tipo}</span>
                 </div>
                 <div style={{ color: C.textM, fontSize: 12 }}>{d.tamanyo_kb} KB</div>
