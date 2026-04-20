@@ -23,7 +23,7 @@ const inputStyle = {
 export const Login = () => {
   const dispatch  = useDispatch()
   const { isDark } = useTheme()
-  const isDark = theme === 'dark'
+  //const isDark = theme === 'dark'
   const [mode,    setMode]    = useState('perfiles')
   const [email,   setEmail]   = useState('')
   const [pass,    setPass]    = useState('')
