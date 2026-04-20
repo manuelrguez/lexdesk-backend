@@ -1,33 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
 :root {
-  --bg:       #07101E;
-  --sidebar:  #09152B;
-  --card:     #0D1C30;
-  --cardHov:  #112038;
-  --border:   #1A2E48;
-  --borderL:  #263D5A;
+  --bg:       #0d0d0d;
+  --sidebar:  #111111;
+  --card:     #181818;
+  --cardHov:  #1f1f1f;
+  --border:   #2a2a2a;
+  --borderL:  #333333;
   --gold:     #00C896;
   --goldL:    #00E6AE;
   --blue:     #3A80C2;
   --purple:   #7A62D2;
   --green:    #00C896;
-  --red:      #C44848;
-  --amber:    #C88020;
-  --text:     #DDD5C0;
-  --textS:    #7088A4;
-  --textM:    #6A82A0;
+  --red:      #E05555;
+  --amber:    #E09020;
+  --text:     #f0f0f0;
+  --textS:    #888888;
+  --textM:    #666666;
 }
 
 /* ── Modo claro ──────────────────────────────────────────────────────────── */
 body.light {
-  --bg:       #F0F4F8;
-  --sidebar:  #E2E8F0;
-  --card:     #FFFFFF;
-  --cardHov:  #F7FAFC;
-  --border:   #CBD5E0;
-  --borderL:  #A0AEC0;
+  --bg:       #f5f5f5;
+  --sidebar:  #ebebeb;
+  --card:     #ffffff;
+  --cardHov:  #f9f9f9;
+  --border:   #e0e0e0;
+  --borderL:  #cccccc;
   --gold:     #00A87E;
   --goldL:    #00C896;
   --blue:     #2B6CB0;
@@ -35,32 +37,22 @@ body.light {
   --green:    #00A87E;
   --red:      #C53030;
   --amber:    #C05621;
-  --text:     #1A202C;
-  --textS:    #4A5568;
-  --textM:    #718096;
+  --text:     #111111;
+  --textS:    #555555;
+  --textM:    #777777;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Crimson Pro', Georgia, serif;
-  font-size: 20px;
-  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 input, textarea, select, button, span, div, p, label, a {
-  font-family: inherit;
-}
-
-body * {
-  font-size: max(var(--applied-size, 1em), 15px);
-}
-
-h1, h2, h3,
-[style*="font-size: 2"],
-[style*="font-size: 3"],
-[style*="font-size: 4"] {
-  font-size: revert !important;
+  font-family: 'Inter', sans-serif;
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -69,13 +61,9 @@ h1, h2, h3,
   50%       { box-shadow: 0 0 14px #00C896AA, 0 0 28px #00C89655; }
 }
 
-/* ── Scrollbar personalizada ─────────────────────────────────────────────── */
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 10px;
-  transition: background 0.2s;
-}
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 ::-webkit-scrollbar-corner { background: transparent; }

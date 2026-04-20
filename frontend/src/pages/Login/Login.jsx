@@ -12,9 +12,11 @@ const USERS_HINT = [
 ]
 
 const inputStyle = {
-  width: '100%', background: 'var(--card)', border: `1px solid ${C.border}`,
+  width: '100%', background: 'var(--card)', border: `1px solid var(--border)`,
   borderRadius: 8, color: 'var(--text)', padding: '10px 14px',
-  fontSize: 15, outline: 'none', boxSizing: 'border-box',
+  fontSize: 14, outline: 'none', boxSizing: 'border-box',
+  fontFamily: "'Inter', sans-serif",
+  transition: 'border-color 0.2s',
 }
 
 export const Login = () => {
@@ -37,7 +39,7 @@ export const Login = () => {
   }
 
   const handleProfileClick = (u) => { if (loading) return; setEmail(u.email); setMode('form') }
-  const handleFormSubmit   = (e)  => { e.preventDefault(); if (!email || !pass) return; doLogin(email, pass) }
+  const handleFormSubmit   = (e) => { e.preventDefault(); if (!email || !pass) return; doLogin(email, pass) }
   const selectedUser = USERS_HINT.find(u => u.email === email)
 
   return (
@@ -45,31 +47,31 @@ export const Login = () => {
       flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       fontFamily: font.body }}>
 
-      {/* Logo Herion */}
-      <div style={{ marginBottom: 12, textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginBottom: 8 }}>
-          <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+      {/* Logo */}
+      <div style={{ marginBottom: 8, textAlign: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 4 }}>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
             <path d="M3 12L9 18L21 6" stroke="#00C896" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-          <span style={{ fontFamily: font.display, fontSize: 52, color: 'var(--text)',
-            fontWeight: 700, letterSpacing: 3, textTransform: 'uppercase' }}>
+          <span style={{ fontFamily: font.body, fontSize: 36, color: 'var(--text)',
+            fontWeight: 700, letterSpacing: 4, textTransform: 'uppercase' }}>
             Herion
           </span>
         </div>
-        <div style={{ color: C.gold, fontSize: 13, letterSpacing: 6,
-          textTransform: 'uppercase', marginBottom: 6 }}>
+        <div style={{ color: C.gold, fontSize: 11, letterSpacing: 6,
+          textTransform: 'uppercase', marginBottom: 8 }}>
           Law
         </div>
-        <div style={{ color: 'var(--textM)', fontSize: 14, marginTop: 6, letterSpacing: 1 }}>
+        <div style={{ color: 'var(--textM)', fontSize: 13, letterSpacing: 0.3 }}>
           Sistema de Gestión Legal Integral con IA
         </div>
       </div>
 
-      <div style={{ width: 1, height: 32, background: C.border, margin: '24px 0' }} />
+      <div style={{ width: 40, height: 1, background: C.border, margin: '20px 0' }} />
 
       {error && (
-        <div style={{ color: C.red, background: C.red + '18', border: `1px solid ${C.red}44`,
-          borderRadius: 8, padding: '10px 20px', marginBottom: 20, fontSize: 14 }}>
+        <div style={{ color: C.red, background: C.red + '15', border: `1px solid ${C.red}33`,
+          borderRadius: 8, padding: '10px 20px', marginBottom: 16, fontSize: 13 }}>
           {error}
         </div>
       )}
@@ -77,39 +79,44 @@ export const Login = () => {
       {/* Modo perfiles */}
       {mode === 'perfiles' && (
         <>
-          <div style={{ display: 'flex', gap: 20, marginBottom: 32 }}>
+          <div style={{ display: 'flex', gap: 16, marginBottom: 28 }}>
             {USERS_HINT.map(u => (
               <div key={u.email}
                 onClick={() => handleProfileClick(u)}
                 onMouseEnter={() => setHovered(u.email)}
                 onMouseLeave={() => setHovered(null)}
-                style={{ background: 'var(--card)',
-                  border: `1px solid ${hovered === u.email ? C.gold : C.border}`,
-                  borderRadius: 12, padding: '32px 36px', textAlign: 'center',
-                  cursor: 'pointer', minWidth: 190,
-                  boxShadow: hovered === u.email ? `0 0 20px ${C.gold}40, 0 0 40px ${C.gold}20` : 'none',
-                  transform: hovered === u.email ? 'translateY(-2px)' : 'none',
-                  transition: 'all 0.2s' }}>
-                <div style={{ width: 64, height: 64, borderRadius: '50%',
-                  background: C.gold + '22', border: `1.5px solid ${C.gold}`,
+                style={{
+                  background: 'var(--card)',
+                  border: `1px solid ${hovered === u.email ? C.gold : 'var(--border)'}`,
+                  borderRadius: 10, padding: '28px 32px', textAlign: 'center',
+                  cursor: 'pointer', minWidth: 180,
+                  boxShadow: hovered === u.email ? `0 0 20px ${C.gold}33, 0 0 40px ${C.gold}15` : 'none',
+                  transform: hovered === u.email ? 'translateY(-3px)' : 'none',
+                  transition: 'all 0.2s'
+                }}>
+                <div style={{
+                  width: 56, height: 56, borderRadius: '50%',
+                  background: C.gold + '18', border: `1.5px solid ${C.gold}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 22, fontWeight: 700, color: C.gold, margin: '0 auto',
-                  boxShadow: hovered === u.email ? `0 0 12px ${C.gold}55` : 'none',
-                  transition: 'all 0.2s' }}>
+                  fontSize: 18, fontWeight: 700, color: C.gold, margin: '0 auto',
+                  boxShadow: hovered === u.email ? `0 0 14px ${C.gold}55` : 'none',
+                  transition: 'all 0.2s'
+                }}>
                   {u.short}
                 </div>
-                <div style={{ color: 'var(--text)', fontWeight: 600, fontSize: 17, marginTop: 16 }}>{u.name}</div>
-                <div style={{ color: C.textS, fontSize: 13, marginTop: 4 }}>{u.role}</div>
-                <div style={{ marginTop: 16, color: C.gold, fontSize: 12 }}>Acceder →</div>
+                <div style={{ color: 'var(--text)', fontWeight: 600, fontSize: 15, marginTop: 14 }}>{u.name}</div>
+                <div style={{ color: 'var(--textS)', fontSize: 12, marginTop: 3 }}>{u.role}</div>
+                <div style={{ marginTop: 14, color: C.gold, fontSize: 12 }}>Acceder →</div>
               </div>
             ))}
           </div>
-          <div style={{ color: 'var(--textM)', fontSize: 12, marginBottom: 16 }}>
+          <div style={{ color: 'var(--textM)', fontSize: 12, marginBottom: 12 }}>
             Seleccione su perfil para acceder al sistema
           </div>
           <button onClick={() => setMode('form')}
-            style={{ background: 'none', border: 'none', color: C.textS,
-              cursor: 'pointer', fontSize: 13, textDecoration: 'underline' }}>
+            style={{ background: 'none', border: 'none', color: 'var(--textS)',
+              cursor: 'pointer', fontSize: 12, textDecoration: 'underline',
+              fontFamily: font.body }}>
             Iniciar sesión con email y contraseña
           </button>
         </>
@@ -117,51 +124,62 @@ export const Login = () => {
 
       {/* Modo formulario */}
       {mode === 'form' && (
-        <div style={{ background: 'var(--card)', border: `1px solid ${C.border}`,
-          borderRadius: 14, padding: '36px 40px', width: 380 }}>
+        <div style={{ background: 'var(--card)', border: `1px solid var(--border)`,
+          borderRadius: 12, padding: '32px 36px', width: 360 }}>
 
           {selectedUser && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14,
-              marginBottom: 28, padding: '14px 16px', background: 'var(--bg)',
-              borderRadius: 10, border: `1px solid ${C.gold}44` }}>
-              <div style={{ width: 44, height: 44, borderRadius: '50%',
-                background: C.gold + '22', border: `1.5px solid ${C.gold}`,
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12,
+              marginBottom: 24, padding: '12px 14px', background: 'var(--bg)',
+              borderRadius: 8, border: `1px solid ${C.gold}33` }}>
+              <div style={{ width: 40, height: 40, borderRadius: '50%',
+                background: C.gold + '18', border: `1.5px solid ${C.gold}`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 16, fontWeight: 700, color: C.gold }}>
+                fontSize: 14, fontWeight: 700, color: C.gold }}>
                 {selectedUser.short}
               </div>
               <div>
-                <div style={{ color: 'var(--text)', fontWeight: 600, fontSize: 15 }}>{selectedUser.name}</div>
-                <div style={{ color: C.textS, fontSize: 13 }}>{selectedUser.role}</div>
+                <div style={{ color: 'var(--text)', fontWeight: 600, fontSize: 14 }}>{selectedUser.name}</div>
+                <div style={{ color: 'var(--textS)', fontSize: 12 }}>{selectedUser.role}</div>
               </div>
             </div>
           )}
 
           <form onSubmit={handleFormSubmit}>
-            <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 6 }}>Email</label>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ display: 'block', color: 'var(--textS)', fontSize: 12, marginBottom: 6, fontWeight: 500 }}>
+                Email
+              </label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="usuario@lexdesk.es" style={inputStyle} required />
+                placeholder="usuario@lexdesk.es" style={inputStyle} required
+                onFocus={e => e.target.style.borderColor = C.gold}
+                onBlur={e => e.target.style.borderColor = 'var(--border)'} />
             </div>
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 6 }}>Contraseña</label>
+            <div style={{ marginBottom: 22 }}>
+              <label style={{ display: 'block', color: 'var(--textS)', fontSize: 12, marginBottom: 6, fontWeight: 500 }}>
+                Contraseña
+              </label>
               <input type="password" value={pass} onChange={e => setPass(e.target.value)}
-                placeholder="••••••••" style={inputStyle} required autoFocus />
+                placeholder="••••••••" style={inputStyle} required autoFocus
+                onFocus={e => e.target.style.borderColor = C.gold}
+                onBlur={e => e.target.style.borderColor = 'var(--border)'} />
             </div>
             <button type="submit" disabled={loading || !email || !pass}
-              style={{ width: '100%',
-                background: loading ? C.textM : C.gold,
-                color: '#07101E', border: 'none', borderRadius: 8, padding: '12px',
-                cursor: loading ? 'wait' : 'pointer', fontWeight: 700, fontSize: 15,
-                marginBottom: 14, transition: 'all 0.2s',
-                boxShadow: !loading ? `0 0 12px ${C.gold}55` : 'none' }}>
+              style={{
+                width: '100%',
+                background: loading ? 'var(--textM)' : C.gold,
+                color: '#0d0d0d', border: 'none', borderRadius: 8, padding: '11px',
+                cursor: loading ? 'wait' : 'pointer', fontWeight: 600, fontSize: 14,
+                marginBottom: 12, transition: 'all 0.2s', fontFamily: font.body,
+                boxShadow: !loading ? `0 0 16px ${C.gold}55` : 'none'
+              }}>
               {loading ? 'Accediendo...' : 'Iniciar sesión'}
             </button>
           </form>
 
           <button onClick={() => { setMode('perfiles'); setEmail(''); setPass(''); setError(null) }}
             style={{ width: '100%', background: 'none', border: 'none',
-              color: C.textS, cursor: 'pointer', fontSize: 13 }}>
+              color: 'var(--textS)', cursor: 'pointer', fontSize: 12,
+              fontFamily: font.body }}>
             ← Volver a perfiles
           </button>
         </div>

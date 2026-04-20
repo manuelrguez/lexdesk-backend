@@ -1,5 +1,5 @@
 export const font = {
-  display: "'Cormorant Garamond', 'Palatino Linotype', serif",
-  body:    "'Crimson Pro', Georgia, serif",
+  display: "'Inter', sans-serif",
+  body:    "'Inter', sans-serif",
   mono:    "'JetBrains Mono', 'Fira Code', monospace",
 }
