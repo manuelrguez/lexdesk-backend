@@ -95,15 +95,15 @@ export const Dashboard = ({ setActive }) => {
       {/* Stats */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
         <Stat icon={Users}    label="Clientes activos"    loading={loading}
-          val={stats?.clientes}          col={C.blue}
+          val={stats?.clientes}          col={C.gold}
           sub={`${stats?.procedimientos || 0} procedimientos activos`} />
         <Stat icon={FileText} label="Documentos archivados" loading={loading}
           val={stats?.documentos}        col={C.gold}   sub="Gestor documental" />
         <Stat icon={Mail}     label="Correos sin leer"    loading={loading}
-          val={stats?.correos_sin_leer ?? '—'} col={C.amber}
+          val={stats?.correos_sin_leer ?? '—'} col={C.gold}
           sub={stats?.correos_sin_leer === null ? 'IMAP no disponible' : 'Bandeja de entrada'} />
         <Stat icon={Calendar} label="Eventos próximos"    loading={loading}
-          val={stats?.eventos_proximos}  col={C.purple} sub="Próximos 30 días" />
+          val={stats?.eventos_proximos}  col={C.gold} sub="Próximos 30 días" />
       </div>
 
       {/* Fila principal */}
@@ -172,7 +172,7 @@ export const Dashboard = ({ setActive }) => {
               textTransform: 'uppercase', letterSpacing: 1 }}>
               Pendiente de cobro
             </div>
-            <div style={{ fontFamily: font.display, fontSize: 30, color: C.amber, fontWeight: 600 }}>
+            <div style={{ fontFamily: font.display, fontSize: 30, color: C.gold, fontWeight: 600 }}>
               {loading ? '—' : fmt(stats?.pendiente_cobro || 0)}
             </div>
             <button onClick={() => setActive('facturacion')}
@@ -189,10 +189,10 @@ export const Dashboard = ({ setActive }) => {
               Accesos rápidos
             </div>
             {[
-              { label: 'Nuevo cliente',   mod: 'clientes',    col: C.blue  },
+              { label: 'Nuevo cliente',   mod: 'clientes',    col: C.gold  },
               { label: 'Subir documento', mod: 'documentos',  col: C.gold  },
-              { label: 'Ver correo',      mod: 'correo',      col: C.amber },
-              { label: 'Nueva factura',   mod: 'facturacion', col: C.green },
+              { label: 'Ver correo',      mod: 'correo',      col: C.gold },
+              { label: 'Nueva factura',   mod: 'facturacion', col: C.gold },
             ].map(({ label, mod, col }) => (
               <div key={mod} onClick={() => setActive(mod)}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',

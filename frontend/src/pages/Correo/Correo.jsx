@@ -75,7 +75,7 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
     } finally { setArchiving(null) }
   }
 
-  const prioCol = { alta: C.red, media: C.amber, baja: C.green }
+  const prioCol = { alta: C.red, media: C.gold, baja: C.green }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -109,7 +109,7 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
             {email.attachments.map(att => (
               <div key={att.filename} style={{ display: 'flex', alignItems: 'center', gap: 10,
                 padding: '8px 12px', background: C.bg, borderRadius: 8, marginBottom: 6 }}>
-                <FileText size={14} color={C.blue} />
+                <FileText size={14} color={C.gold} />
                 <span style={{ color: C.textS, fontSize: 13, flex: 1 }}>{att.filename}</span>
                 <span style={{ color: C.textM, fontSize: 12 }}>{att.size} KB</span>
                 {archived[att.filename] ? (
@@ -237,13 +237,13 @@ export const Correo = () => {
               Bandeja de entrada
             </div>
             {unread > 0 && (
-              <span style={{ background: C.amber, color: '#000', borderRadius: 10,
+              <span style={{ background: C.gold, color: '#000', borderRadius: 10,
                 fontSize: 12, fontWeight: 700, padding: '2px 9px' }}>
                 {unread} sin leer
               </span>
             )}
           </div>
-          <button onClick={fetchEmails} disabled={loading} style={btn(C.blue)}>
+          <button onClick={fetchEmails} disabled={loading} style={btn(C.gold)}>
             <RefreshCw size={14} style={{ animation: loading ? 'spin 1s linear infinite' : 'none' }} />
             {loading ? 'Sincronizando...' : 'Sincronizar'}
           </button>
@@ -293,15 +293,15 @@ export const Correo = () => {
           return (
             <div key={email.uid} onClick={() => handleSelect(email)}
               style={{ ...card({ marginBottom: 8, padding: '14px 18px', cursor: 'pointer',
-                borderColor: isActive ? C.gold : (!email.seen ? C.amber + '66' : C.border),
-                borderLeft: `3px solid ${isActive ? C.gold : (!email.seen ? C.amber : 'transparent')}`,
+                borderColor: isActive ? C.gold : (!email.seen ? C.gold + '66' : C.border),
+                borderLeft: `3px solid ${isActive ? C.gold : (!email.seen ? C.gold : 'transparent')}`,
               }), transition: 'all 0.15s' }}
               onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = C.cardHov }}
               onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = C.card }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
                 {!email.seen && (
                   <div style={{ width: 8, height: 8, borderRadius: '50%',
-                    background: C.amber, marginTop: 6, flexShrink: 0 }} />
+                    background: C.gold, marginTop: 6, flexShrink: 0 }} />
                 )}
                 <div style={{ flex: 1, marginLeft: email.seen ? 18 : 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>

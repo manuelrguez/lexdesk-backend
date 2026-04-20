@@ -22,7 +22,7 @@ const ITEMS = [
   { id: 'correo',      icon: Mail,         label: 'Correo'      },
   { id: 'agenda',      icon: Calendar,     label: 'Agenda'      },
   { id: 'lexnet',      icon: Globe,        label: 'LexNet'      },
-  { id: 'facturacion', icon: Receipt,      label: 'Facturación' },
+  { id: 'facturacion', icon: () => <span style={{ fontSize: 15, fontWeight: 700, width: 15, display: 'inline-flex', justifyContent: 'center' }}>€</span>, label: 'Facturación' },
   { id: 'whatsapp',    icon: WhatsAppIcon, label: 'WhatsApp'    },
 ]
 

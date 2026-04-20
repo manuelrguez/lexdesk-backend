@@ -318,7 +318,7 @@ export const Agenda = () => {
         {syncMsg && <div style={{ color: syncMsg.ok ? C.green : C.red, fontSize: 12 }}>{syncMsg.text}</div>}
         {gcalConnected ? (
           <div style={{ display: 'flex', gap: 8 }}>
-            <button onClick={handleSyncAll} disabled={syncing} style={btn(C.blue, { fontSize: 12, padding: '6px 14px' })}>
+            <button onClick={handleSyncAll} disabled={syncing} style={btn(C.gold, { fontSize: 12, padding: '6px 14px' })}>
               <RefreshCw size={13} style={{ animation: syncing ? 'spin 1s linear infinite' : 'none' }} />
               {syncing ? 'Sincronizando...' : 'Sincronizar todo'}
             </button>

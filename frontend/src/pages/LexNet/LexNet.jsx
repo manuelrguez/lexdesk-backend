@@ -3,7 +3,7 @@
 
 export const LexNet = () => (
   <div style={{ color: '#DDD5C0' }}>
-    <h2>LexNet</h2>
+    <h2>Herion Lawyers</h2>
     <p>Módulo en construcción</p>
   </div>
 )

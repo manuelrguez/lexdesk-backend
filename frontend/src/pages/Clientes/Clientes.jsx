@@ -171,12 +171,12 @@ export const Clientes = () => {
                   <div style={{ color: C.textS, fontSize: 13, marginTop: 2 }}>{c.email || '—'}</div>
                 </div>
                 <div>
-                  <span style={{ fontSize: 14, color: C.blue, fontWeight: 600 }}>{c.procedimientos?.length || 0}</span>
+                  <span style={{ fontSize: 14, color: C.gold, fontWeight: 600 }}>{c.procedimientos?.length || 0}</span>
                   <span style={{ color: C.textM, fontSize: 13 }}> activos</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <button onClick={e => { e.stopPropagation(); openEdit(c) }}
-                    style={{ background: C.blue+'22', color: C.blue, border: 'none',
+                    style={{ background: C.gold+'22', color: C.gold, border: 'none',
                       borderRadius: 6, padding: '5px 12px', cursor: 'pointer', fontSize: 12 }}>
                     Editar
                   </button>
@@ -251,7 +251,7 @@ export const Clientes = () => {
                         {p.estado}
                       </span>
                       <button onClick={() => openEditProc(p)}
-                        style={{ background: C.blue+'22', color: C.blue, border: 'none', borderRadius: 4, padding: '3px 9px', cursor: 'pointer', fontSize: 12 }}>
+                        style={{ background: C.gold+'22', color: C.gold, border: 'none', borderRadius: 4, padding: '3px 9px', cursor: 'pointer', fontSize: 12 }}>
                         Editar
                       </button>
                       <button onClick={() => handleDeleteProc(p.id)}

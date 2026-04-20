@@ -208,10 +208,10 @@ export const Facturacion = () => {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20 }}>
         {[
-          { icon: TrendingUp,  label: 'Total facturado',   val: fmt(totFact), col: C.blue   },
-          { icon: CheckCircle, label: 'Cobrado',            val: fmt(totCob),  col: C.green  },
+          { icon: TrendingUp,  label: 'Total facturado',   val: fmt(totFact), col: C.gold   },
+          { icon: CheckCircle, label: 'Cobrado',            val: fmt(totCob),  col: C.gold  },
           { icon: Clock,       label: 'Pendiente de cobro', val: fmt(totPend), col: C.amber  },
-          { icon: CreditCard,  label: 'IVA repercutido',    val: fmt(totIva),  col: C.purple },
+          { icon: CreditCard,  label: 'IVA repercutido',    val: fmt(totIva),  col: C.gold },
         ].map(({ icon: Icon, label, val, col }) => (
           <div key={label} style={card()}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>

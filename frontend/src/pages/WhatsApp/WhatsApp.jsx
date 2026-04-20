@@ -159,7 +159,7 @@ export const WhatsApp = () => {
                 padding: '10px 0', borderBottom: `1px solid ${C.border}` }}>
                 <span style={{ fontSize: 18, flexShrink: 0 }}>{icon}</span>
                 <div>
-                  <div style={{ color: '#25D366', fontSize: 13, fontWeight: 700,
+                  <div style={{ color: C.gold, fontSize: 13, fontWeight: 700,
                     fontFamily: 'monospace' }}>{cmd}</div>
                   <div style={{ color: C.textM, fontSize: 12, marginTop: 2 }}>{desc}</div>
                 </div>
@@ -169,7 +169,7 @@ export const WhatsApp = () => {
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 <span style={{ fontSize: 18, flexShrink: 0 }}>🤖</span>
                 <div>
-                  <div style={{ color: '#25D366', fontSize: 13, fontWeight: 700,
+                  <div style={{ color: C.gold, fontSize: 13, fontWeight: 700,
                     fontFamily: 'monospace' }}>consulta libre</div>
                   <div style={{ color: C.textM, fontSize: 12, marginTop: 2 }}>
                     Cualquier pregunta — responde con IA (Claude)
