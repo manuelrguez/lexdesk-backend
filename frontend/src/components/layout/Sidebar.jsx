@@ -1,3 +1,12 @@
+// ── typography.js ─────────────────────────────────────────────────────────
+export const font = {
+  display: "'Inter', sans-serif",
+  body:    "'Inter', sans-serif",
+  mono:    "'JetBrains Mono', 'Fira Code', monospace",
+}
+
+
+// ── Sidebar.jsx ───────────────────────────────────────────────────────────
 import { useState, useEffect, useRef } from 'react'
 import { Home, Users, FileText, Mail, Calendar, Globe, Receipt,
          LogOut, Sun, Moon, Bell, X, ChevronRight } from 'lucide-react'
@@ -156,7 +165,7 @@ export const Sidebar = ({ active, setActive, isDark, onToggleTheme }) => {
           display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M3 12L9 18L21 6" stroke="#00C896" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 12L9 18L21 6" stroke="#2bffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <div>
               <div style={{ fontFamily: font.body, fontSize: 15, color: C.text,

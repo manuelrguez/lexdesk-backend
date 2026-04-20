@@ -4,37 +4,37 @@
 
 /* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
 :root {
-  --bg:       #0f1117;
-  --sidebar:  #141720;
-  --card:     #1a1d27;
-  --cardHov:  #1f2330;
-  --border:   #252936;
-  --borderL:  #2e3444;
-  --gold:     #00D4A0;
-  --goldL:    #00EDBB;
+  --bg:       #0a0a0a;
+  --sidebar:  #0d0d0d;
+  --card:     #131313;
+  --cardHov:  #1a1a1a;
+  --border:   #222222;
+  --borderL:  #2e2e2e;
+  --gold:     #2bffff;
+  --goldL:    #6fffff;
   --blue:     #3A80C2;
   --purple:   #7A62D2;
-  --green:    #00C896;
+  --green:    #2bffff;
   --red:      #E05555;
   --amber:    #E09020;
   --text:     #f0f0f0;
-  --textS:    #888888;
-  --textM:    #666666;
+  --textS:    #777777;
+  --textM:    #555555;
 }
 
 /* ── Modo claro ──────────────────────────────────────────────────────────── */
 body.light {
-  --bg:       #f5f5f5;
-  --sidebar:  #ebebeb;
+  --bg:       #f4f4f4;
+  --sidebar:  #ececec;
   --card:     #ffffff;
-  --cardHov:  #f9f9f9;
+  --cardHov:  #f8f8f8;
   --border:   #e0e0e0;
   --borderL:  #cccccc;
-  --gold:     #00A87E;
-  --goldL:    #00C896;
+  --gold:     #009e9e;
+  --goldL:    #00bfbf;
   --blue:     #2B6CB0;
   --purple:   #6B46C1;
-  --green:    #00A87E;
+  --green:    #009e9e;
   --red:      #C53030;
   --amber:    #C05621;
   --text:     #111111;
@@ -51,14 +51,38 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Fondo con gradiente Herion sobre el negro base */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #000000 0%, #0f1011 50%, #000000 100%);
+  z-index: -2;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #2bffff1f 0%,
+    #2bffff0a 50%,
+    #2bffff12 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+body.light::before { background: #f4f4f4; }
+body.light::after  { background: none; }
+
 input, textarea, select, button, span, div, p, label, a {
   font-family: 'Inter', sans-serif;
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 6px #00D4A066, 0 0 12px #00D4A033; }
-  50%       { box-shadow: 0 0 14px #00D4A0AA, 0 0 28px #00D4A055; }
+  0%, 100% { box-shadow: 0 0 6px #2bffff44, 0 0 12px #2bffff22; }
+  50%       { box-shadow: 0 0 14px #2bffff88, 0 0 28px #2bffff44; }
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────── */

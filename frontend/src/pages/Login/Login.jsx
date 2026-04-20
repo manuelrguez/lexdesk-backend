@@ -51,7 +51,7 @@ export const Login = () => {
       <div style={{ marginBottom: 8, textAlign: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 4 }}>
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <path d="M3 12L9 18L21 6" stroke="#00C896" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M3 12L9 18L21 6" stroke="#2bffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           <span style={{ fontFamily: font.body, fontSize: 36, color: 'var(--text)',
             fontWeight: 700, letterSpacing: 4, textTransform: 'uppercase' }}>
