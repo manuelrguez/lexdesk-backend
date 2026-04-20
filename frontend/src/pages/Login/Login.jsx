@@ -4,7 +4,7 @@ import { login } from '../../store/authSlice.js'
 import { authService } from '../../services/auth.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
-import { useTheme } from '../../context/ThemeContext'
+import { useTheme } from '../../hooks/useTheme.js'
 
 const USERS_HINT = [
   { email: 'maria@lexdesk.es',  name: 'María García',     role: 'Abogada Senior', color: C.gold,   short: 'MG' },
@@ -22,7 +22,7 @@ const inputStyle = {
 
 export const Login = () => {
   const dispatch  = useDispatch()
-  const { theme } = useTheme()
+  const { isDark } = useTheme()
   const isDark = theme === 'dark'
   const [mode,    setMode]    = useState('perfiles')
   const [email,   setEmail]   = useState('')
