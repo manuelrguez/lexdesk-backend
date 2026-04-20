@@ -49,14 +49,8 @@ export const Login = () => {
 
       {/* Logo */}
       <div style={{ marginBottom: 8, textAlign: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 4 }}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <path d="M3 12L9 18L21 6" stroke="#2bffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span style={{ fontFamily: font.body, fontSize: 36, color: 'var(--text)',
-            fontWeight: 700, letterSpacing: 4, textTransform: 'uppercase' }}>
-            Herion
-          </span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+          <img src="/logo-herion.png" alt="Herion" style={{ height: 42, objectFit: 'contain' }} />
         </div>
         <div style={{ color: C.gold, fontSize: 11, letterSpacing: 6,
           textTransform: 'uppercase', marginBottom: 8 }}>

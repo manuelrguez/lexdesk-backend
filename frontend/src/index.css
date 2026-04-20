@@ -4,12 +4,12 @@
 
 /* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
 :root {
-  --bg:       #000000;
-  --sidebar:  #141619;
-  --card:     #141619;
-  --cardHov:  #1a1d21;
-  --border:   #222428;
-  --borderL:  #2e3238;
+  --bg:       #0a0e14;
+  --sidebar:  #0d1219;
+  --card:     #111820;
+  --cardHov:  #16202a;
+  --border:   #1e2d3d;
+  --borderL:  #253545;
   --gold:     #2bffff;
   --goldL:    #6fffff;
   --blue:     #3A80C2;
@@ -50,6 +50,17 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Efecto neón cian de fondo — igual que Herion */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 40% at 50% 100%, #2bffff0f 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+body.light::after { display: none; }
 
 input, textarea, select, button, span, div, p, label, a {
   font-family: 'Inter', sans-serif;

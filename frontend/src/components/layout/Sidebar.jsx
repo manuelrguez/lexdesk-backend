@@ -155,19 +155,10 @@ export const Sidebar = ({ active, setActive, isDark, onToggleTheme }) => {
         {/* Logo */}
         <div style={{ padding: '20px 20px 16px', borderBottom: `1px solid ${C.border}`,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M3 12L9 18L21 6" stroke="#2bffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <div>
-              <div style={{ fontFamily: font.body, fontSize: 15, color: C.text,
-                fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase' }}>
-                Herion
-              </div>
-              <div style={{ color: C.gold, fontSize: 9, letterSpacing: 3,
-                textTransform: 'uppercase', marginTop: -2 }}>
-                Law
-              </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <img src="/logo-herion.png" alt="Herion" style={{ height: 22, objectFit: 'contain', objectPosition: 'left' }} />
+            <div style={{ color: C.gold, fontSize: 9, letterSpacing: 3, textTransform: 'uppercase', paddingLeft: 2 }}>
+              Law
             </div>
           </div>
           <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
