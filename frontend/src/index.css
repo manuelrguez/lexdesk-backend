@@ -5,11 +5,11 @@
 /* ── Modo oscuro (por defecto) ───────────────────────────────────────────── */
 :root {
   --bg:       #000000;
-  --sidebar:  #000000;
-  --card:     #0f1011;
-  --cardHov:  #161718;
-  --border:   #1e1e1e;
-  --borderL:  #2a2a2a;
+  --sidebar:  #141619;
+  --card:     #141619;
+  --cardHov:  #1a1d21;
+  --border:   #222428;
+  --borderL:  #2e3238;
   --gold:     #2bffff;
   --goldL:    #6fffff;
   --blue:     #3A80C2;
