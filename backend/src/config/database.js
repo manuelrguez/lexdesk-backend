@@ -10,7 +10,7 @@ const sequelize = new Sequelize({
   username: process.env.DB_USER     || 'lexdesk_user',
   password: process.env.DB_PASSWORD || 'change_me',
   logging:  false,
-  pool: { max: 10, min: 2, acquire: 30000, idle: 10000 },
+  pool: { max: 10, min: 0, acquire: 30000, idle: 10000 },
   dialectOptions: isProduction ? {
     ssl: {
       require: true,
