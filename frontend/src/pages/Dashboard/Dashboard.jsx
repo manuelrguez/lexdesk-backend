@@ -1,21 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { Users, FileText, Mail, Calendar,
-         TrendingUp, RefreshCw, ChevronRight } from 'lucide-react'
+import { Users, FileText, Mail, Calendar, RefreshCw, ChevronRight } from 'lucide-react'
 import { dashboardService } from '../../services/dashboard.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
+import { useTranslation } from 'react-i18next'
 
 const card = (extra = {}) => ({
-  background: C.card, border: `1px solid ${C.border}`,
-  borderRadius: 12, padding: 22, ...extra,
+  background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 22, ...extra,
 })
-
 const fmt = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €'
-
-const tipoC = { juicio: C.gold, plazo: C.gold, señalamiento: C.gold, reunion: C.gold, otro: C.gold }
 const tipoI = { juicio: '⚖', plazo: '⏰', señalamiento: '📋', reunion: '👥', otro: '📌' }
-const estadoCol = { Pagada: C.gold, Pendiente: C.gold, Emitida: C.gold }
+const estadoCol = { Pagada: C.gold, Pendiente: C.amber, Emitida: C.gold }
 
 const Stat = ({ icon: Icon, label, val, sub, col, loading }) => (
   <div style={card({ flex: 1 })}>
@@ -36,11 +32,12 @@ const Stat = ({ icon: Icon, label, val, sub, col, loading }) => (
 
 export const Dashboard = ({ setActive }) => {
   const user = useSelector(s => s.auth.user)
-  const [stats,     setStats]     = useState(null)
-  const [eventos,   setEventos]   = useState([])
-  const [actividad, setActividad] = useState({ facturas: [], documentos: [] })
-  const [loading,   setLoading]   = useState(true)
-  const [refreshing,setRefreshing]= useState(false)
+  const { t } = useTranslation()
+  const [stats,      setStats]      = useState(null)
+  const [eventos,    setEventos]    = useState([])
+  const [actividad,  setActividad]  = useState({ facturas: [], documentos: [] })
+  const [loading,    setLoading]    = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
 
   const today = new Date().toLocaleDateString('es-ES', {
     weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
@@ -65,9 +62,9 @@ export const Dashboard = ({ setActive }) => {
     const hoy  = new Date(); hoy.setHours(0,0,0,0)
     const dest = new Date(fecha + 'T00:00:00')
     const diff = Math.round((dest - hoy) / 86400000)
-    if (diff === 0) return { label: 'Hoy',    col: C.red   }
-    if (diff === 1) return { label: 'Mañana', col: C.amber }
-    if (diff <= 7)  return { label: `${diff}d`, col: C.gold }
+    if (diff === 0) return { label: t('dashboard.hoy'),    col: C.red   }
+    if (diff === 1) return { label: t('dashboard.manana'), col: C.amber }
+    if (diff <= 7)  return { label: `${diff}d`, col: C.amber }
     return { label: `${diff}d`, col: C.textM }
   }
 
@@ -77,7 +74,7 @@ export const Dashboard = ({ setActive }) => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
         <div>
           <div style={{ fontFamily: font.display, fontSize: 36, color: C.text, fontWeight: 600 }}>
-            Bienvenido, <span style={{ color: C.gold }}>{user?.name?.split(' ')[0]}</span>
+            {t('dashboard.bienvenido')} <span style={{ color: C.gold }}>{user?.name?.split(' ')[0]}</span>
           </div>
           <div style={{ color: C.textS, fontSize: 16, marginTop: 5, textTransform: 'capitalize' }}>
             {today} · {user?.role}
@@ -88,22 +85,22 @@ export const Dashboard = ({ setActive }) => {
             color: C.textS, cursor: 'pointer', padding: '8px 16px', fontSize: 14,
             display: 'flex', alignItems: 'center', gap: 6 }}>
           <RefreshCw size={14} style={{ animation: refreshing ? 'spin 1s linear infinite' : 'none' }} />
-          Actualizar
+          {t('dashboard.actualizar')}
         </button>
       </div>
 
       {/* Stats */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
-        <Stat icon={Users}    label="Clientes activos"    loading={loading}
-          val={stats?.clientes}          col={C.gold}
-          sub={`${stats?.procedimientos || 0} procedimientos activos`} />
-        <Stat icon={FileText} label="Documentos archivados" loading={loading}
-          val={stats?.documentos}        col={C.gold}   sub="Gestor documental" />
-        <Stat icon={Mail}     label="Correos sin leer"    loading={loading}
+        <Stat icon={Users}    label={t('dashboard.clientesActivos')}    loading={loading}
+          val={stats?.clientes} col={C.gold}
+          sub={t('dashboard.procedimientosActivos', { n: stats?.procedimientos || 0 })} />
+        <Stat icon={FileText} label={t('dashboard.documentosArchivados')} loading={loading}
+          val={stats?.documentos} col={C.gold} sub={t('dashboard.gestorDocumental')} />
+        <Stat icon={Mail}     label={t('dashboard.correosSinLeer')}     loading={loading}
           val={stats?.correos_sin_leer ?? '—'} col={C.gold}
-          sub={stats?.correos_sin_leer === null ? 'IMAP no disponible' : 'Bandeja de entrada'} />
-        <Stat icon={Calendar} label="Eventos próximos"    loading={loading}
-          val={stats?.eventos_proximos}  col={C.gold} sub="Próximos 30 días" />
+          sub={stats?.correos_sin_leer === null ? t('dashboard.imapNoDisponible') : t('dashboard.bandejaEntrada')} />
+        <Stat icon={Calendar} label={t('dashboard.eventosProximos')}   loading={loading}
+          val={stats?.eventos_proximos} col={C.gold} sub={t('dashboard.proximos30dias')} />
       </div>
 
       {/* Fila principal */}
@@ -112,29 +109,28 @@ export const Dashboard = ({ setActive }) => {
         <div style={card({ flex: 2 })}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
             <div style={{ color: C.textS, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Próximos señalamientos y plazos
+              {t('dashboard.proximosSeñalamientos')}
             </div>
             <button onClick={() => setActive('agenda')}
               style={{ background: 'none', border: 'none', color: C.textM, cursor: 'pointer',
                 fontSize: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-              Ver agenda <ChevronRight size={14} />
+              {t('dashboard.verAgenda')} <ChevronRight size={14} />
             </button>
           </div>
           {loading ? (
-            <div style={{ color: C.textM, fontSize: 15, padding: '20px 0' }}>Cargando...</div>
+            <div style={{ color: C.textM, fontSize: 15, padding: '20px 0' }}>{t('dashboard.cargando')}</div>
           ) : eventos.length === 0 ? (
             <div style={{ color: C.textM, fontSize: 15, padding: '20px 0', textAlign: 'center' }}>
-              No hay eventos en los próximos 30 días
+              {t('dashboard.noEventos30dias')}
             </div>
           ) : eventos.map((ev, i) => {
             const dias = diasHasta(ev.fecha?.slice(0,10))
             return (
               <div key={ev.id} style={{ display: 'flex', alignItems: 'center', gap: 14,
-                padding: '13px 0',
-                borderBottom: i < eventos.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+                padding: '13px 0', borderBottom: i < eventos.length - 1 ? `1px solid ${C.border}` : 'none' }}>
                 <div style={{ width: 40, height: 40, borderRadius: 8, flexShrink: 0,
-                  background: (tipoC[ev.tipo] || C.textM) + '22',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+                  background: C.gold + '22', display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', fontSize: 18 }}>
                   {tipoI[ev.tipo] || '📌'}
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -152,7 +148,7 @@ export const Dashboard = ({ setActive }) => {
                   </div>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <div style={{ color: tipoC[ev.tipo] || C.textS, fontSize: 14, fontWeight: 600 }}>
+                  <div style={{ color: C.gold, fontSize: 14, fontWeight: 600 }}>
                     {new Date(ev.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
                   </div>
                   <div style={{ color: dias.col, fontSize: 13, marginTop: 2, fontWeight: 600 }}>
@@ -166,11 +162,9 @@ export const Dashboard = ({ setActive }) => {
 
         {/* Columna derecha */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {/* Pendiente de cobro */}
           <div style={{ ...card(), borderLeft: `3px solid ${C.gold}` }}>
-            <div style={{ color: C.textS, fontSize: 13, marginBottom: 10,
-              textTransform: 'uppercase', letterSpacing: 1 }}>
-              Pendiente de cobro
+            <div style={{ color: C.textS, fontSize: 13, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 }}>
+              {t('dashboard.pendienteCobro')}
             </div>
             <div style={{ fontFamily: font.display, fontSize: 30, color: C.gold, fontWeight: 600 }}>
               {loading ? '—' : fmt(stats?.pendiente_cobro || 0)}
@@ -178,30 +172,28 @@ export const Dashboard = ({ setActive }) => {
             <button onClick={() => setActive('facturacion')}
               style={{ background: 'none', border: 'none', color: C.textM, cursor: 'pointer',
                 fontSize: 14, marginTop: 10, display: 'flex', alignItems: 'center', gap: 4, padding: 0 }}>
-              Ver facturas <ChevronRight size={13} />
+              {t('dashboard.verFacturas')} <ChevronRight size={13} />
             </button>
           </div>
 
-          {/* Accesos rápidos */}
           <div style={card()}>
-            <div style={{ color: C.textS, fontSize: 13, marginBottom: 14,
-              textTransform: 'uppercase', letterSpacing: 1 }}>
-              Accesos rápidos
+            <div style={{ color: C.textS, fontSize: 13, marginBottom: 14, textTransform: 'uppercase', letterSpacing: 1 }}>
+              {t('dashboard.accesosRapidos')}
             </div>
             {[
-              { label: 'Nuevo cliente',   mod: 'clientes',    col: C.gold  },
-              { label: 'Subir documento', mod: 'documentos',  col: C.gold  },
-              { label: 'Ver correo',      mod: 'correo',      col: C.gold },
-              { label: 'Nueva factura',   mod: 'facturacion', col: C.gold },
-            ].map(({ label, mod, col }) => (
+              { label: t('dashboard.nuevoCliente'),   mod: 'clientes'    },
+              { label: t('dashboard.subirDocumento'), mod: 'documentos'  },
+              { label: t('dashboard.verCorreo'),      mod: 'correo'      },
+              { label: t('dashboard.nuevaFactura'),   mod: 'facturacion' },
+            ].map(({ label, mod }) => (
               <div key={mod} onClick={() => setActive(mod)}
                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   padding: '11px 14px', borderRadius: 8, cursor: 'pointer', marginBottom: 7,
                   border: `1px solid ${C.border}`, transition: 'all 0.15s' }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = col; e.currentTarget.style.background = col + '0D' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.background = C.gold + '0D' }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = 'transparent' }}>
                 <span style={{ color: C.text, fontSize: 15 }}>{label}</span>
-                <ChevronRight size={15} color={col} />
+                <ChevronRight size={15} color={C.gold} />
               </div>
             ))}
           </div>
@@ -214,18 +206,18 @@ export const Dashboard = ({ setActive }) => {
         <div style={card({ flex: 1 })}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div style={{ color: C.textS, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Últimas facturas
+              {t('dashboard.ultimasFacturas')}
             </div>
             <button onClick={() => setActive('facturacion')}
               style={{ background: 'none', border: 'none', color: C.textM, cursor: 'pointer',
                 fontSize: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-              Ver todas <ChevronRight size={14} />
+              {t('dashboard.verTodas')} <ChevronRight size={14} />
             </button>
           </div>
           {loading ? (
-            <div style={{ color: C.textM, fontSize: 15 }}>Cargando...</div>
+            <div style={{ color: C.textM, fontSize: 15 }}>{t('dashboard.cargando')}</div>
           ) : actividad.facturas.length === 0 ? (
-            <div style={{ color: C.textM, fontSize: 15, textAlign: 'center', padding: 16 }}>Sin facturas</div>
+            <div style={{ color: C.textM, fontSize: 15, textAlign: 'center', padding: 16 }}>{t('dashboard.sinFacturas')}</div>
           ) : actividad.facturas.map((f, i) => (
             <div key={f.id} style={{ display: 'flex', justifyContent: 'space-between',
               alignItems: 'center', padding: '10px 0',
@@ -249,18 +241,18 @@ export const Dashboard = ({ setActive }) => {
         <div style={card({ flex: 1 })}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div style={{ color: C.textS, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Documentos recientes
+              {t('dashboard.documentosRecientes')}
             </div>
             <button onClick={() => setActive('documentos')}
               style={{ background: 'none', border: 'none', color: C.textM, cursor: 'pointer',
                 fontSize: 14, display: 'flex', alignItems: 'center', gap: 4 }}>
-              Ver todos <ChevronRight size={14} />
+              {t('dashboard.verTodos')} <ChevronRight size={14} />
             </button>
           </div>
           {loading ? (
-            <div style={{ color: C.textM, fontSize: 15 }}>Cargando...</div>
+            <div style={{ color: C.textM, fontSize: 15 }}>{t('dashboard.cargando')}</div>
           ) : actividad.documentos.length === 0 ? (
-            <div style={{ color: C.textM, fontSize: 15, textAlign: 'center', padding: 16 }}>Sin documentos</div>
+            <div style={{ color: C.textM, fontSize: 15, textAlign: 'center', padding: 16 }}>{t('dashboard.sinDocumentos')}</div>
           ) : actividad.documentos.map((d, i) => (
             <div key={d.id} style={{ display: 'flex', justifyContent: 'space-between',
               alignItems: 'center', padding: '10px 0',
@@ -283,15 +275,14 @@ export const Dashboard = ({ setActive }) => {
 
         {/* Estado del sistema */}
         <div style={card({ flex: 1 })}>
-          <div style={{ color: C.textS, fontSize: 13, marginBottom: 16,
-            textTransform: 'uppercase', letterSpacing: 1 }}>
-            Estado del sistema
+          <div style={{ color: C.textS, fontSize: 13, marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1 }}>
+            {t('dashboard.estadoSistema')}
           </div>
           {[
-            { label: 'Base de datos', ok: true,                             note: 'PostgreSQL conectado'    },
-            { label: 'Correo IMAP',   ok: stats?.correos_sin_leer !== null, note: stats?.correos_sin_leer !== null ? 'Gmail conectado' : 'No disponible' },
-            { label: 'LexNet',        ok: false,                            note: 'Pendiente credenciales'  },
-            { label: 'WhatsApp Bot',  ok: true,                             note: 'Twilio activo'           },
+            { label: t('dashboard.baseDatos'), ok: true, note: t('dashboard.postgresConectado') },
+            { label: t('dashboard.correoImap'), ok: stats?.correos_sin_leer !== null, note: stats?.correos_sin_leer !== null ? t('dashboard.gmailConectado') : t('dashboard.noDisponible') },
+            { label: t('dashboard.lexnet'), ok: false, note: t('dashboard.pendienteCredenciales') },
+            { label: t('dashboard.whatsappBot'), ok: true, note: t('dashboard.twilioActivo') },
           ].map(({ label, ok, note }) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between',
               alignItems: 'center', marginBottom: 14 }}>
@@ -302,7 +293,7 @@ export const Dashboard = ({ setActive }) => {
               <span style={{ fontSize: 13, color: ok ? C.gold : C.amber,
                 background: (ok ? C.gold : C.amber) + '22',
                 padding: '3px 10px', borderRadius: 10, whiteSpace: 'nowrap' }}>
-                {ok ? '✓ Activo' : '— Pendiente'}
+                {ok ? t('dashboard.activo') : t('dashboard.pendiente')}
               </span>
             </div>
           ))}

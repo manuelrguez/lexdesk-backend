@@ -5,6 +5,7 @@ import { facturacionService } from '../../services/facturacion.service.js'
 import { clientesService }    from '../../services/clientes.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
+import { useTranslation } from 'react-i18next'
 
 const card = (extra = {}) => ({
   background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, ...extra,
@@ -21,11 +22,12 @@ const inputStyle = {
   fontSize: 14, outline: 'none', boxSizing: 'border-box',
 }
 
-const ESTADOS    = ['Emitida', 'Pendiente', 'Pagada']
-const estadoCol  = { Pagada: C.gold, Pendiente: C.gold, Emitida: C.gold }
-const fmt        = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €'
+const ESTADOS   = ['Emitida', 'Pendiente', 'Pagada']
+const estadoCol = { Pagada: C.green, Pendiente: C.amber, Emitida: C.gold }
+const fmt       = (n) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: 2 }) + ' €'
 
 function FacturaModal({ factura, clientes, onSave, onClose }) {
+  const { t } = useTranslation()
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState({
     cliente_id: factura?.cliente_id || '',
@@ -64,33 +66,33 @@ function FacturaModal({ factura, clientes, onSave, onClose }) {
           <X size={18} />
         </button>
         <div style={{ fontFamily: font.display, fontSize: 22, color: C.text, marginBottom: 20 }}>
-          {factura ? 'Editar factura' : 'Nueva factura'}
+          {factura ? t('facturacion.editarFactura') : t('facturacion.nuevaFactura')}
         </div>
 
-        <Lbl>Cliente</Lbl>
+        <Lbl>{t('facturacion.cliente')}</Lbl>
         <select value={form.cliente_id} onChange={e => set('cliente_id', e.target.value)} style={inputStyle}>
-          <option value="">— Sin asignar —</option>
+          <option value="">{t('facturacion.sinAsignar')}</option>
           {clientes.map(c => <option key={c.id} value={c.id}>{c.nombre}</option>)}
         </select>
 
-        <Lbl>Concepto *</Lbl>
+        <Lbl>{t('facturacion.concepto')}</Lbl>
         <textarea value={form.concepto} onChange={e => set('concepto', e.target.value)}
-          placeholder="Ej: Honorarios dirección letrada Ene-Mar 2025"
+          placeholder={t('facturacion.conceptoPlaceholder')}
           rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           <div>
-            <Lbl>Base imponible (€) *</Lbl>
+            <Lbl>{t('facturacion.baseImponibleLabel')}</Lbl>
             <input type="number" min="0" step="0.01" value={form.base}
               onChange={e => set('base', e.target.value)} placeholder="0.00" style={inputStyle} />
           </div>
           <div>
-            <Lbl>Fecha</Lbl>
+            <Lbl>{t('facturacion.fecha')}</Lbl>
             <input type="date" value={form.fecha} onChange={e => set('fecha', e.target.value)} style={inputStyle} />
           </div>
         </div>
 
-        <Lbl>Estado</Lbl>
+        <Lbl>{t('facturacion.estado')}</Lbl>
         <div style={{ display: 'flex', gap: 8 }}>
           {ESTADOS.map(e => (
             <button key={e} onClick={() => set('estado', e)}
@@ -105,7 +107,7 @@ function FacturaModal({ factura, clientes, onSave, onClose }) {
 
         {baseNum > 0 && (
           <div style={{ marginTop: 16, padding: '14px 16px', background: C.bg, borderRadius: 8, border: `1px solid ${C.border}` }}>
-            {[['Base imponible', fmt(baseNum)], ['IVA (21%)', fmt(ivaNum)]].map(([k, v]) => (
+            {[[t('facturacion.baseImponible'), fmt(baseNum)], [t('facturacion.iva21'), fmt(ivaNum)]].map(([k, v]) => (
               <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                 <span style={{ color: C.textM, fontSize: 13 }}>{k}</span>
                 <span style={{ color: C.textS, fontSize: 13 }}>{v}</span>
@@ -119,10 +121,10 @@ function FacturaModal({ factura, clientes, onSave, onClose }) {
         )}
 
         <div style={{ display: 'flex', gap: 10, marginTop: 24, justifyContent: 'flex-end' }}>
-          <button onClick={onClose} style={btn(C.border, { color: C.textS })}>Cancelar</button>
+          <button onClick={onClose} style={btn(C.border, { color: C.textS })}>{t('facturacion.cancelar')}</button>
           <button onClick={handleSave} disabled={saving || !form.concepto || !form.base}
             style={btn(C.gold, { opacity: (!form.concepto || !form.base) ? 0.5 : 1 })}>
-            {saving ? 'Guardando...' : factura ? 'Guardar cambios' : 'Crear factura'}
+            {saving ? t('facturacion.guardando') : factura ? t('facturacion.guardarCambios') : t('facturacion.crearFactura')}
           </button>
         </div>
       </div>
@@ -131,6 +133,7 @@ function FacturaModal({ factura, clientes, onSave, onClose }) {
 }
 
 export const Facturacion = () => {
+  const { t } = useTranslation()
   const [facturas,  setFacturas]  = useState([])
   const [clientes,  setClientes]  = useState([])
   const [loading,   setLoading]   = useState(true)
@@ -147,12 +150,12 @@ export const Facturacion = () => {
   const fetchFacturas = async () => {
     setLoading(true)
     try { const { data } = await facturacionService.getAll(); setFacturas(data) }
-    catch { setError('Error cargando facturas') } finally { setLoading(false) }
+    catch { setError(t('facturacion.errorCargando')) } finally { setLoading(false) }
   }
 
-  const handleSave    = (f, isEdit) => { setFacturas(prev => isEdit ? prev.map(x => x.id === f.id ? f : x) : [f, ...prev]); setModal(false); setEditing(null) }
-  const handleEstado  = async (id, estado) => { try { await facturacionService.updateEstado(id, estado); setFacturas(prev => prev.map(f => f.id === id ? { ...f, estado } : f)) } catch { setError('Error actualizando estado') } }
-  const handleDelete  = async (id) => { if (!confirm('¿Eliminar esta factura?')) return; try { await facturacionService.remove(id); setFacturas(prev => prev.filter(f => f.id !== id)) } catch { setError('Error eliminando factura') } }
+  const handleSave   = (f, isEdit) => { setFacturas(prev => isEdit ? prev.map(x => x.id === f.id ? f : x) : [f, ...prev]); setModal(false); setEditing(null) }
+  const handleEstado = async (id, estado) => { try { await facturacionService.updateEstado(id, estado); setFacturas(prev => prev.map(f => f.id === id ? { ...f, estado } : f)) } catch { setError(t('facturacion.errorEstado')) } }
+  const handleDelete = async (id) => { if (!confirm(t('facturacion.confirmarEliminar'))) return; try { await facturacionService.remove(id); setFacturas(prev => prev.filter(f => f.id !== id)) } catch { setError(t('facturacion.errorEliminando')) } }
 
   const handleExportPDF = async (id, numero, clienteNombre) => {
     try {
@@ -163,11 +166,9 @@ export const Facturacion = () => {
       link.href  = url
       const clienteSafe = (clienteNombre || 'SinCliente').replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g, '').trim().replace(/\s+/g, '_')
       link.setAttribute('download', `Factura_${numero}_${clienteSafe}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
+      document.body.appendChild(link); link.click(); link.remove()
       setTimeout(() => window.URL.revokeObjectURL(url), 1000)
-    } catch { setError('Error generando PDF') }
+    } catch { setError(t('facturacion.errorPdf')) }
   }
 
   const totFact = facturas.reduce((a, f) => a + Number(f.total), 0)
@@ -191,9 +192,9 @@ export const Facturacion = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <div style={{ fontFamily: font.display, fontSize: 28, color: C.text, fontWeight: 600 }}>Facturación</div>
+        <div style={{ fontFamily: font.display, fontSize: 28, color: C.text, fontWeight: 600 }}>{t('facturacion.titulo')}</div>
         <button onClick={() => setModal(true)} style={btn(C.gold)}>
-          <Plus size={15} /> Nueva factura
+          <Plus size={15} /> {t('facturacion.nuevaFactura')}
         </button>
       </div>
 
@@ -205,13 +206,12 @@ export const Facturacion = () => {
         </div>
       )}
 
-      {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20 }}>
         {[
-          { icon: TrendingUp,  label: 'Total facturado',   val: fmt(totFact), col: C.gold   },
-          { icon: CheckCircle, label: 'Cobrado',            val: fmt(totCob),  col: C.gold  },
-          { icon: Clock,       label: 'Pendiente de cobro', val: fmt(totPend), col: C.gold  },
-          { icon: CreditCard,  label: 'IVA repercutido',    val: fmt(totIva),  col: C.gold },
+          { icon: TrendingUp,  label: t('facturacion.totalFacturado'),  val: fmt(totFact), col: C.gold  },
+          { icon: CheckCircle, label: t('facturacion.cobrado'),          val: fmt(totCob),  col: C.gold  },
+          { icon: Clock,       label: t('facturacion.pendienteCobro'),   val: fmt(totPend), col: C.amber },
+          { icon: CreditCard,  label: t('facturacion.ivaRepercutido'),   val: fmt(totIva),  col: C.gold  },
         ].map(({ icon: Icon, label, val, col }) => (
           <div key={label} style={card()}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -228,7 +228,6 @@ export const Facturacion = () => {
       </div>
 
       <div style={{ display: 'flex', gap: 20 }}>
-        {/* Tabla — flex:1 */}
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
             {['Todos', ...ESTADOS].map(e => (
@@ -237,7 +236,8 @@ export const Facturacion = () => {
                   border: `1px solid ${filterEst === e ? (estadoCol[e] || C.gold) : C.border}`,
                   background: filterEst === e ? (estadoCol[e] || C.gold) + '22' : 'transparent',
                   color: filterEst === e ? (estadoCol[e] || C.gold) : C.textS }}>
-                {e}{e !== 'Todos' && <span style={{ marginLeft: 6, opacity: 0.7 }}>({facturas.filter(f => f.estado === e).length})</span>}
+                {e === 'Todos' ? t('facturacion.todos') : e}
+                {e !== 'Todos' && <span style={{ marginLeft: 6, opacity: 0.7 }}>({facturas.filter(f => f.estado === e).length})</span>}
               </button>
             ))}
           </div>
@@ -246,14 +246,19 @@ export const Facturacion = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '120px 2fr 130px 100px 100px 70px',
               padding: '11px 20px', borderBottom: `1px solid ${C.border}`,
               color: C.textM, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-              <div>Número</div><div>Cliente / Concepto</div><div>Total</div><div>Fecha</div><div>Estado</div><div></div>
+              <div>{t('facturacion.numero')}</div>
+              <div>{t('facturacion.clienteConcepto')}</div>
+              <div>{t('facturacion.total')}</div>
+              <div>{t('facturacion.fecha')}</div>
+              <div>{t('facturacion.estado')}</div>
+              <div></div>
             </div>
 
             {loading ? (
-              <div style={{ padding: 40, textAlign: 'center', color: C.textS }}>Cargando...</div>
+              <div style={{ padding: 40, textAlign: 'center', color: C.textS }}>{t('facturacion.cargando')}</div>
             ) : filtered.length === 0 ? (
               <div style={{ padding: 40, textAlign: 'center', color: C.textS }}>
-                No hay facturas{filterEst !== 'Todos' ? ` con estado "${filterEst}"` : ''}
+                {filterEst !== 'Todos' ? t('facturacion.noFacturasEstado', { estado: filterEst }) : t('facturacion.noFacturas')}
               </div>
             ) : filtered.map((f, i) => (
               <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '120px 2fr 130px 100px 100px 70px',
@@ -281,7 +286,6 @@ export const Facturacion = () => {
                 </div>
                 <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>
                   <button onClick={() => handleExportPDF(f.id, f.numero, f.cliente_nombre)}
-                    title="Descargar PDF"
                     style={{ background: 'none', border: 'none', color: C.textM, cursor: 'pointer', padding: 5 }}
                     onMouseEnter={e => e.currentTarget.style.color = C.gold}
                     onMouseLeave={e => e.currentTarget.style.color = C.textM}>
@@ -304,18 +308,17 @@ export const Facturacion = () => {
             ))}
           </div>
           <div style={{ color: C.textM, fontSize: 13, marginTop: 10 }}>
-            {filtered.length} factura{filtered.length !== 1 ? 's' : ''}
+            {filtered.length !== 1 ? t('facturacion.facturasCountPlural', { n: filtered.length }) : t('facturacion.facturasCount', { n: filtered.length })}
           </div>
         </div>
 
-        {/* Panel derecho — más ancho */}
         <div style={{ width: 360, flexShrink: 0 }}>
           <div style={card({ marginBottom: 16 })}>
             <div style={{ color: C.textS, fontSize: 12, marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Facturación mensual
+              {t('facturacion.facturacionMensual')}
             </div>
             {chartData.length === 0 ? (
-              <div style={{ color: C.textM, fontSize: 14, textAlign: 'center', padding: 20 }}>Sin datos</div>
+              <div style={{ color: C.textM, fontSize: 14, textAlign: 'center', padding: 20 }}>{t('facturacion.sinDatos')}</div>
             ) : (
               <>
                 <ResponsiveContainer width="100%" height={190}>
@@ -326,12 +329,12 @@ export const Facturacion = () => {
                       tickFormatter={v => `${(v/1000).toFixed(0)}k`} />
                     <Tooltip contentStyle={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, fontSize: 12 }}
                       labelStyle={{ color: C.text }} formatter={v => [fmt(v)]} />
-                    <Bar dataKey="fact" fill={C.gold}  radius={[4,4,0,0]} name="Facturado" />
-                    <Bar dataKey="cob"  fill={C.gold} radius={[4,4,0,0]} name="Cobrado"   />
+                    <Bar dataKey="fact" fill={C.gold}  radius={[4,4,0,0]} name={t('facturacion.facturado')} />
+                    <Bar dataKey="cob"  fill={C.green} radius={[4,4,0,0]} name={t('facturacion.cobrado')}   />
                   </BarChart>
                 </ResponsiveContainer>
                 <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 10 }}>
-                  {[[C.gold,'Facturado'],[C.gold,'Cobrado']].map(([col,lab]) => (
+                  {[[C.gold, t('facturacion.facturado')],[C.green, t('facturacion.cobrado')]].map(([col, lab]) => (
                     <div key={lab} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <div style={{ width: 10, height: 10, borderRadius: 2, background: col }} />
                       <span style={{ color: C.textM, fontSize: 12 }}>{lab}</span>
@@ -344,14 +347,14 @@ export const Facturacion = () => {
 
           <div style={card()}>
             <div style={{ color: C.textS, fontSize: 12, marginBottom: 14, textTransform: 'uppercase', letterSpacing: 1 }}>
-              Resumen fiscal
+              {t('facturacion.resumenFiscal')}
             </div>
             {[
-              ['Base imponible',       facturas.reduce((a,f) => a + Number(f.base), 0), C.textS, false],
-              ['IVA repercutido (21%)', totIva,  C.textS, false],
-              ['Total facturado',       totFact, C.gold,  true],
-              ['Cobrado',               totCob,  C.gold, false],
-              ['Pendiente',             totPend, C.gold, false],
+              [t('facturacion.baseImponible'),       facturas.reduce((a,f) => a + Number(f.base), 0), C.textS, false],
+              [t('facturacion.iva21'),                totIva,  C.textS, false],
+              [t('facturacion.totalFacturado'),       totFact, C.gold,  true],
+              [t('facturacion.cobrado'),              totCob,  C.green, false],
+              [t('facturacion.pendiente'),            totPend, C.amber, false],
             ].map(([k, v, col, big], i) => (
               <div key={k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '8px 0', borderTop: i === 2 ? `1px solid ${C.border}` : 'none', marginTop: i === 2 ? 4 : 0 }}>

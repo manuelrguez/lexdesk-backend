@@ -5,6 +5,7 @@ import { authService } from '../../services/auth.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
 import { useTheme } from '../../hooks/useTheme.js'
+import { useTranslation } from 'react-i18next'
 
 const USERS_HINT = [
   { email: 'maria@lexdesk.es',  name: 'María García',     role: 'Abogada Senior', color: C.gold,   short: 'MG' },
@@ -16,14 +17,13 @@ const inputStyle = {
   width: '100%', background: 'var(--card)', border: `1px solid var(--border)`,
   borderRadius: 8, color: 'var(--text)', padding: '10px 14px',
   fontSize: 14, outline: 'none', boxSizing: 'border-box',
-  fontFamily: "'Inter', sans-serif",
-  transition: 'border-color 0.2s',
+  fontFamily: "'Inter', sans-serif", transition: 'border-color 0.2s',
 }
 
 export const Login = () => {
   const dispatch  = useDispatch()
   const { isDark } = useTheme()
-  //const isDark = theme === 'dark'
+  const { t } = useTranslation()
   const [mode,    setMode]    = useState('perfiles')
   const [email,   setEmail]   = useState('')
   const [pass,    setPass]    = useState('')
@@ -37,7 +37,7 @@ export const Login = () => {
       const { data } = await authService.login(loginEmail, loginPass)
       dispatch(login({ user: data.user, token: data.token }))
     } catch (err) {
-      setError(err.response?.data?.error || 'Credenciales incorrectas')
+      setError(err.response?.data?.error || t('login.credencialesIncorrectas'))
     } finally { setLoading(false) }
   }
 
@@ -50,17 +50,16 @@ export const Login = () => {
       flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       fontFamily: font.body }}>
 
-      {/* Logo */}
       <div style={{ marginBottom: 8, textAlign: 'center' }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-          <img src={isDark ? "/logo-herion.png" : "/logo-dark-herion.png"} alt="Herion" style={{ height: 42, objectFit: 'contain' }} />
+          <img src={isDark ? "/logo-herion.png" : "/logo-dark-herion.png"} alt="Herion"
+            style={{ height: 42, objectFit: 'contain' }} />
         </div>
-        <div style={{ color: C.gold, fontSize: 11, letterSpacing: 6,
-          textTransform: 'uppercase', marginBottom: 8 }}>
+        <div style={{ color: C.gold, fontSize: 11, letterSpacing: 6, textTransform: 'uppercase', marginBottom: 8 }}>
           Law
         </div>
         <div style={{ color: 'var(--textM)', fontSize: 13, letterSpacing: 0.3 }}>
-          Sistema de Gestión Legal Integral con IA
+          {t('login.tagline')}
         </div>
       </div>
 
@@ -73,7 +72,6 @@ export const Login = () => {
         </div>
       )}
 
-      {/* Modo perfiles */}
       {mode === 'perfiles' && (
         <>
           <div style={{ display: 'flex', gap: 16, marginBottom: 28 }}>
@@ -82,48 +80,41 @@ export const Login = () => {
                 onClick={() => handleProfileClick(u)}
                 onMouseEnter={() => setHovered(u.email)}
                 onMouseLeave={() => setHovered(null)}
-                style={{
-                  background: 'var(--card)',
+                style={{ background: 'var(--card)',
                   border: `1px solid ${hovered === u.email ? C.gold : 'var(--border)'}`,
                   borderRadius: 10, padding: '28px 32px', textAlign: 'center',
                   cursor: 'pointer', minWidth: 180,
                   boxShadow: hovered === u.email ? `0 0 20px ${C.gold}33, 0 0 40px ${C.gold}15` : 'none',
                   transform: hovered === u.email ? 'translateY(-3px)' : 'none',
-                  transition: 'all 0.2s'
-                }}>
-                <div style={{
-                  width: 56, height: 56, borderRadius: '50%',
+                  transition: 'all 0.2s' }}>
+                <div style={{ width: 56, height: 56, borderRadius: '50%',
                   background: C.gold + '18', border: `1.5px solid ${C.gold}`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: 18, fontWeight: 700, color: C.gold, margin: '0 auto',
                   boxShadow: hovered === u.email ? `0 0 14px ${C.gold}55` : 'none',
-                  transition: 'all 0.2s'
-                }}>
+                  transition: 'all 0.2s' }}>
                   {u.short}
                 </div>
                 <div style={{ color: 'var(--text)', fontWeight: 600, fontSize: 15, marginTop: 14 }}>{u.name}</div>
                 <div style={{ color: 'var(--textS)', fontSize: 12, marginTop: 3 }}>{u.role}</div>
-                <div style={{ marginTop: 14, color: C.gold, fontSize: 12 }}>Acceder →</div>
+                <div style={{ marginTop: 14, color: C.gold, fontSize: 12 }}>{t('login.acceder')}</div>
               </div>
             ))}
           </div>
           <div style={{ color: 'var(--textM)', fontSize: 12, marginBottom: 12 }}>
-            Seleccione su perfil para acceder al sistema
+            {t('login.seleccionaPerfil')}
           </div>
           <button onClick={() => setMode('form')}
             style={{ background: 'none', border: 'none', color: 'var(--textS)',
-              cursor: 'pointer', fontSize: 12, textDecoration: 'underline',
-              fontFamily: font.body }}>
-            Iniciar sesión con email y contraseña
+              cursor: 'pointer', fontSize: 12, textDecoration: 'underline', fontFamily: font.body }}>
+            {t('login.emailPassword')}
           </button>
         </>
       )}
 
-      {/* Modo formulario */}
       {mode === 'form' && (
         <div style={{ background: 'var(--card)', border: `1px solid var(--border)`,
           borderRadius: 12, padding: '32px 36px', width: 360 }}>
-
           {selectedUser && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 12,
               marginBottom: 24, padding: '12px 14px', background: 'var(--bg)',
@@ -140,11 +131,10 @@ export const Login = () => {
               </div>
             </div>
           )}
-
           <form onSubmit={handleFormSubmit}>
             <div style={{ marginBottom: 14 }}>
               <label style={{ display: 'block', color: 'var(--textS)', fontSize: 12, marginBottom: 6, fontWeight: 500 }}>
-                Email
+                {t('login.email')}
               </label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                 placeholder="usuario@lexdesk.es" style={inputStyle} required
@@ -153,7 +143,7 @@ export const Login = () => {
             </div>
             <div style={{ marginBottom: 22 }}>
               <label style={{ display: 'block', color: 'var(--textS)', fontSize: 12, marginBottom: 6, fontWeight: 500 }}>
-                Contraseña
+                {t('login.password')}
               </label>
               <input type="password" value={pass} onChange={e => setPass(e.target.value)}
                 placeholder="••••••••" style={inputStyle} required autoFocus
@@ -161,23 +151,18 @@ export const Login = () => {
                 onBlur={e => e.target.style.borderColor = 'var(--border)'} />
             </div>
             <button type="submit" disabled={loading || !email || !pass}
-              style={{
-                width: '100%',
-                background: loading ? 'var(--textM)' : C.gold,
+              style={{ width: '100%', background: loading ? 'var(--textM)' : C.gold,
                 color: '#0d0d0d', border: 'none', borderRadius: 8, padding: '11px',
                 cursor: loading ? 'wait' : 'pointer', fontWeight: 600, fontSize: 14,
                 marginBottom: 12, transition: 'all 0.2s', fontFamily: font.body,
-                boxShadow: !loading ? `0 0 16px ${C.gold}55` : 'none'
-              }}>
-              {loading ? 'Accediendo...' : 'Iniciar sesión'}
+                boxShadow: !loading ? `0 0 16px ${C.gold}55` : 'none' }}>
+              {loading ? t('login.accediendo') : t('login.iniciarSesion')}
             </button>
           </form>
-
           <button onClick={() => { setMode('perfiles'); setEmail(''); setPass(''); setError(null) }}
             style={{ width: '100%', background: 'none', border: 'none',
-              color: 'var(--textS)', cursor: 'pointer', fontSize: 12,
-              fontFamily: font.body }}>
-            ← Volver a perfiles
+              color: 'var(--textS)', cursor: 'pointer', fontSize: 12, fontFamily: font.body }}>
+            {t('login.volverPerfiles')}
           </button>
         </div>
       )}

@@ -4,11 +4,10 @@ import { RefreshCw, Mail, FileText, Zap, CheckCircle,
 import { correoService } from '../../services/correo.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
+import { useTranslation } from 'react-i18next'
 
-// ─── helpers ─────────────────────────────────────────────────────────────────
 const card = (extra = {}) => ({
-  background: C.card, border: `1px solid ${C.border}`,
-  borderRadius: 12, padding: 20, ...extra,
+  background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, ...extra,
 })
 const btn = (col = C.gold, extra = {}) => ({
   background: col, color: col === C.gold ? '#07101E' : '#fff',
@@ -17,23 +16,6 @@ const btn = (col = C.gold, extra = {}) => ({
   display: 'flex', alignItems: 'center', gap: 6, ...extra,
 })
 
-const TIPO_META = {
-  lexnet:   { label: 'LexNet',   col: C.gold  },
-  judicial: { label: 'Judicial', col: C.gold  },
-  cliente:  { label: 'Cliente',  col: C.gold },
-  otro:     { label: 'Otro',     col: C.textS },
-}
-
-const Badge = ({ tipo }) => {
-  const m = TIPO_META[tipo] || TIPO_META.otro
-  return (
-    <span style={{ fontSize: 11, color: m.col, background: m.col + '22',
-      padding: '2px 9px', borderRadius: 10, whiteSpace: 'nowrap' }}>
-      {m.label}
-    </span>
-  )
-}
-
 const fmtDate = (d) => {
   if (!d) return ''
   const date = new Date(d)
@@ -41,13 +23,20 @@ const fmtDate = (d) => {
     ' ' + date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
 }
 
-// ─── Panel detalle correo ─────────────────────────────────────────────────────
 function EmailPanel({ email, onClose, onClassify, onArchive }) {
+  const { t } = useTranslation()
   const [classifying, setClassifying] = useState(false)
   const [archiving,   setArchiving]   = useState(null)
   const [iaResult,    setIaResult]    = useState(email.ia || null)
   const [archived,    setArchived]    = useState({})
   const [archiveMsg,  setArchiveMsg]  = useState(null)
+
+  const TIPO_META = {
+    lexnet:   { label: t('correo.lexnet'),     col: C.gold  },
+    judicial: { label: t('correo.judicial'),   col: C.gold  },
+    cliente:  { label: t('correo.clienteTag'), col: C.gold  },
+    otro:     { label: t('correo.otro'),        col: C.textS },
+  }
 
   const handleClassify = async () => {
     setClassifying(true)
@@ -55,10 +44,8 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
       const { data } = await correoService.classify(email.uid, {
         subject: email.subject, from: email.from, text: email.text,
       })
-      setIaResult(data)
-      onClassify(email.uid, data)
-    } catch { /* silencioso */ }
-    finally { setClassifying(false) }
+      setIaResult(data); onClassify(email.uid, data)
+    } catch { /* silencioso */ } finally { setClassifying(false) }
   }
 
   const handleArchive = async (att) => {
@@ -68,23 +55,21 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
         filename: att.filename, content: att.content, uid: email.uid,
       })
       setArchived(p => ({ ...p, [att.filename]: true }))
-      setArchiveMsg(`✓ ${att.filename} archivado en Documentos`)
+      setArchiveMsg(`✓ ${att.filename} ${t('correo.archivado').replace('✓ ', '')}`)
       onArchive && onArchive(data)
     } catch {
       setArchiveMsg(`✗ Error archivando ${att.filename}`)
     } finally { setArchiving(null) }
   }
 
-  const prioCol = { alta: C.red, media: C.gold, baja: C.green }
+  const prioCol = { alta: C.red, media: C.amber, baja: C.green }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={card({ padding: '18px 20px' })}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
           <div style={{ flex: 1, marginRight: 12 }}>
-            <div style={{ color: C.text, fontSize: 15, fontWeight: 600, marginBottom: 8 }}>
-              {email.subject}
-            </div>
+            <div style={{ color: C.text, fontSize: 15, fontWeight: 600, marginBottom: 8 }}>{email.subject}</div>
             <div style={{ color: C.textM, fontSize: 13 }}>
               De: <span style={{ color: C.textS }}>{email.from}</span>
             </div>
@@ -95,16 +80,15 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
           </button>
         </div>
 
-        <div style={{ color: C.textS, fontSize: 14, lineHeight: 1.8,
-          maxHeight: 200, overflowY: 'auto', marginBottom: 14,
-          borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
+        <div style={{ color: C.textS, fontSize: 14, lineHeight: 1.8, maxHeight: 200, overflowY: 'auto',
+          marginBottom: 14, borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
           {email.text || '(Sin contenido de texto)'}
         </div>
 
         {email.attachments?.length > 0 && (
           <div style={{ borderTop: `1px solid ${C.border}`, paddingTop: 12 }}>
             <div style={{ color: C.textM, fontSize: 12, marginBottom: 8, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-              Adjuntos
+              {t('correo.adjuntos')}
             </div>
             {email.attachments.map(att => (
               <div key={att.filename} style={{ display: 'flex', alignItems: 'center', gap: 10,
@@ -113,12 +97,12 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
                 <span style={{ color: C.textS, fontSize: 13, flex: 1 }}>{att.filename}</span>
                 <span style={{ color: C.textM, fontSize: 12 }}>{att.size} KB</span>
                 {archived[att.filename] ? (
-                  <span style={{ color: C.green, fontSize: 12 }}>✓ Archivado</span>
+                  <span style={{ color: C.green, fontSize: 12 }}>{t('correo.archivado')}</span>
                 ) : (
                   <button onClick={() => handleArchive(att)} disabled={archiving === att.filename}
                     style={btn(C.gold, { fontSize: 11, padding: '5px 12px' })}>
                     <Archive size={12} />
-                    {archiving === att.filename ? '...' : 'Archivar'}
+                    {archiving === att.filename ? '...' : t('correo.archivar')}
                   </button>
                 )}
               </div>
@@ -133,18 +117,17 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
       </div>
 
       <div style={card()}>
-        <div style={{ color: C.textS, fontSize: 12, marginBottom: 14,
-          textTransform: 'uppercase', letterSpacing: 1 }}>
-          Clasificación IA
+        <div style={{ color: C.textS, fontSize: 12, marginBottom: 14, textTransform: 'uppercase', letterSpacing: 1 }}>
+          {t('correo.clasificacionIa')}
         </div>
         {iaResult ? (
           <div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
               {[
-                ['Tipo',          <Badge tipo={iaResult.tipo} />],
-                ['Prioridad',     <span style={{ color: prioCol[iaResult.prioridad] || C.textS, fontSize: 13 }}>{iaResult.prioridad}</span>],
-                ['Procedimiento', <span style={{ color: C.gold, fontSize: 13, fontFamily: 'monospace' }}>{iaResult.procedimiento || '—'}</span>],
-                ['Cliente',       <span style={{ color: C.textS, fontSize: 13 }}>{iaResult.cliente || '—'}</span>],
+                [t('correo.tipoLabel'),    <span style={{ fontSize: 13, color: (TIPO_META[iaResult.tipo] || TIPO_META.otro).col }}>{(TIPO_META[iaResult.tipo] || TIPO_META.otro).label}</span>],
+                [t('correo.prioridad'),    <span style={{ color: prioCol[iaResult.prioridad] || C.textS, fontSize: 13 }}>{iaResult.prioridad}</span>],
+                [t('correo.procedimiento'), <span style={{ color: C.gold, fontSize: 13, fontFamily: 'monospace' }}>{iaResult.procedimiento || '—'}</span>],
+                [t('correo.clienteLabel'), <span style={{ color: C.textS, fontSize: 13 }}>{iaResult.cliente || '—'}</span>],
               ].map(([k, v]) => (
                 <div key={k}>
                   <div style={{ color: C.textM, fontSize: 11, marginBottom: 4 }}>{k}</div>
@@ -162,12 +145,12 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
         ) : (
           <div>
             <div style={{ color: C.textM, fontSize: 14, marginBottom: 14 }}>
-              Sin clasificar — la IA puede detectar tipo, procedimiento y prioridad
+              {t('correo.sinClasificar')}
             </div>
             <button onClick={handleClassify} disabled={classifying}
               style={btn(C.gold, { width: '100%', justifyContent: 'center' })}>
               <Zap size={14} />
-              {classifying ? 'Clasificando...' : 'Clasificar con IA'}
+              {classifying ? t('correo.clasificando') : t('correo.clasificarIa')}
             </button>
           </div>
         )}
@@ -176,24 +159,28 @@ function EmailPanel({ email, onClose, onClassify, onArchive }) {
   )
 }
 
-// ─── Página principal ─────────────────────────────────────────────────────────
 export const Correo = () => {
-  const [emails,     setEmails]    = useState([])
-  const [loading,    setLoading]   = useState(false)
-  const [error,      setError]     = useState(null)
-  const [selected,   setSelected]  = useState(null)
-  const [filterTipo, setFilter]    = useState('Todos')
-  const [summary,    setSummary]   = useState('')
-  const [sumLoading, setSumLoad]   = useState(false)
+  const { t } = useTranslation()
+  const [emails,     setEmails]   = useState([])
+  const [loading,    setLoading]  = useState(false)
+  const [error,      setError]    = useState(null)
+  const [selected,   setSelected] = useState(null)
+  const [filterTipo, setFilter]   = useState('Todos')
+  const [summary,    setSummary]  = useState('')
+  const [sumLoading, setSumLoad]  = useState(false)
+
+  const TIPO_META = {
+    lexnet:   { label: t('correo.lexnet'),     col: C.gold  },
+    judicial: { label: t('correo.judicial'),   col: C.gold  },
+    cliente:  { label: t('correo.clienteTag'), col: C.gold  },
+    otro:     { label: t('correo.otro'),        col: C.textS },
+  }
 
   const fetchEmails = async () => {
     setLoading(true); setError(null)
-    try {
-      const { data } = await correoService.getAll()
-      setEmails(data)
-    } catch (err) {
-      setError(err.response?.data?.error || 'Error conectando al servidor de correo')
-    } finally { setLoading(false) }
+    try { const { data } = await correoService.getAll(); setEmails(data) }
+    catch (err) { setError(err.response?.data?.error || t('correo.errorConexion')) }
+    finally { setLoading(false) }
   }
 
   useEffect(() => { fetchEmails() }, [])
@@ -223,29 +210,28 @@ export const Correo = () => {
     finally { setSumLoad(false) }
   }
 
-  const unread  = emails.filter(e => !e.seen).length
   const TIPOS   = ['Todos', 'lexnet', 'judicial', 'cliente', 'otro']
+  const unread  = emails.filter(e => !e.seen).length
   const filtered = emails.filter(e => filterTipo === 'Todos' || e.ia?.tipo === filterTipo)
 
   return (
     <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
-      {/* Columna principal — se estrecha cuando hay panel */}
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <div style={{ fontFamily: font.display, fontSize: 28, color: C.text, fontWeight: 600 }}>
-              Bandeja de entrada
+              {t('correo.titulo')}
             </div>
             {unread > 0 && (
               <span style={{ background: C.gold, color: '#000', borderRadius: 10,
                 fontSize: 12, fontWeight: 700, padding: '2px 9px' }}>
-                {unread} sin leer
+                {t('correo.sinLeer', { n: unread })}
               </span>
             )}
           </div>
           <button onClick={fetchEmails} disabled={loading} style={btn(C.gold)}>
             <RefreshCw size={14} style={{ animation: loading ? 'spin 1s linear infinite' : 'none' }} />
-            {loading ? 'Sincronizando...' : 'Sincronizar'}
+            {loading ? t('correo.sincronizando') : t('correo.sincronizar')}
           </button>
         </div>
 
@@ -253,26 +239,26 @@ export const Correo = () => {
           <div style={{ color: C.red, background: C.red + '18', border: `1px solid ${C.red}44`,
             borderRadius: 8, padding: '12px 16px', marginBottom: 16, fontSize: 14 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-              <AlertCircle size={15} /> Error de conexión
+              <AlertCircle size={15} /> {t('correo.errorConexion')}
             </div>
             <div style={{ color: C.textM, fontSize: 13 }}>{error}</div>
           </div>
         )}
 
         <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-          {TIPOS.map(t => {
-            const m = TIPO_META[t] || { label: 'Todos', col: C.gold }
-            const active = filterTipo === t
+          {TIPOS.map(tp => {
+            const m = TIPO_META[tp] || { label: t('correo.todos'), col: C.gold }
+            const active = filterTipo === tp
             return (
-              <button key={t} onClick={() => setFilter(t)}
+              <button key={tp} onClick={() => setFilter(tp)}
                 style={{ padding: '6px 14px', borderRadius: 20, fontSize: 12, cursor: 'pointer',
                   border: `1px solid ${active ? (m.col || C.gold) : C.border}`,
                   background: active ? (m.col || C.gold) + '22' : 'transparent',
                   color: active ? (m.col || C.gold) : C.textS }}>
-                {t === 'Todos' ? 'Todos' : m.label}
-                {t !== 'Todos' && (
+                {tp === 'Todos' ? t('correo.todos') : m.label}
+                {tp !== 'Todos' && (
                   <span style={{ marginLeft: 5, opacity: 0.7 }}>
-                    ({emails.filter(e => e.ia?.tipo === t).length})
+                    ({emails.filter(e => e.ia?.tipo === tp).length})
                   </span>
                 )}
               </button>
@@ -282,11 +268,11 @@ export const Correo = () => {
 
         {loading ? (
           <div style={{ ...card({ textAlign: 'center', padding: 40 }), color: C.textS }}>
-            Conectando al servidor de correo...
+            {t('correo.conectando')}
           </div>
         ) : filtered.length === 0 ? (
           <div style={{ ...card({ textAlign: 'center', padding: 40 }), color: C.textS }}>
-            {emails.length === 0 ? 'No hay correos. Pulsa Sincronizar.' : 'No hay correos con ese filtro'}
+            {emails.length === 0 ? t('correo.noCorreos') : t('correo.noCorreosFiltro')}
           </div>
         ) : filtered.map(email => {
           const isActive = selected?.uid === email.uid
@@ -314,10 +300,16 @@ export const Correo = () => {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span style={{ color: C.textM, fontSize: 13 }}>{email.from}</span>
-                    {email.ia && <Badge tipo={email.ia.tipo} />}
+                    {email.ia && (
+                      <span style={{ fontSize: 11, color: (TIPO_META[email.ia.tipo] || TIPO_META.otro).col,
+                        background: (TIPO_META[email.ia.tipo] || TIPO_META.otro).col + '22',
+                        padding: '2px 9px', borderRadius: 10 }}>
+                        {(TIPO_META[email.ia.tipo] || TIPO_META.otro).label}
+                      </span>
+                    )}
                     {email.attachments?.length > 0 && (
                       <span style={{ color: C.textM, fontSize: 12 }}>
-                        📎 {email.attachments.length} adjunto{email.attachments.length > 1 ? 's' : ''}
+                        📎 {email.attachments.length}
                       </span>
                     )}
                   </div>
@@ -328,39 +320,34 @@ export const Correo = () => {
         })}
       </div>
 
-      {/* Panel derecho — más ancho */}
       <div style={{ width: 520, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {selected ? (
-          <EmailPanel
-            email={selected}
-            onClose={() => setSelected(null)}
-            onClassify={handleClassify}
-            onArchive={() => {}}
-          />
+          <EmailPanel email={selected} onClose={() => setSelected(null)}
+            onClassify={handleClassify} onArchive={() => {}} />
         ) : (
           <div style={{ ...card({ textAlign: 'center', padding: 40 }) }}>
             <Mail size={32} color={C.textM} style={{ marginBottom: 10 }} />
-            <div style={{ color: C.textM, fontSize: 14 }}>Selecciona un correo para leerlo</div>
+            <div style={{ color: C.textM, fontSize: 14 }}>{t('correo.seleccionaCorreo')}</div>
           </div>
         )}
 
         <div style={card()}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: C.textS,
             fontSize: 12, marginBottom: 14, textTransform: 'uppercase', letterSpacing: 1 }}>
-            <MessageSquare size={14} /> Resumen diario WhatsApp
+            <MessageSquare size={14} /> {t('correo.resumenDiario')}
           </div>
           <button onClick={handleSummary} disabled={sumLoading || emails.length === 0}
-            style={btn(C.gold, { width: '100%', justifyContent: 'center',
+            style={btn('#25D366', { width: '100%', justifyContent: 'center',
               opacity: emails.length === 0 ? 0.5 : 1 })}>
             <Zap size={14} />
-            {sumLoading ? 'Generando con IA...' : 'Generar resumen'}
+            {sumLoading ? t('correo.generando') : t('correo.generarResumen')}
           </button>
           {summary && (
             <div style={{ marginTop: 14, background: '#25D36614',
               border: '1px solid #25D36640', borderRadius: 10, padding: 16 }}>
-              <div style={{ color: C.gold, fontSize: 12, marginBottom: 8,
+              <div style={{ color: '#25D366', fontSize: 12, marginBottom: 8,
                 display: 'flex', alignItems: 'center', gap: 5 }}>
-                <CheckCircle size={13} /> PREVIEW WHATSAPP
+                <CheckCircle size={13} /> {t('correo.previewWhatsapp')}
               </div>
               <div style={{ color: C.text, fontSize: 14, lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>
                 {summary}

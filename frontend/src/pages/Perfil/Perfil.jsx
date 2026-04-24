@@ -4,6 +4,7 @@ import { login } from '../../store/authSlice.js'
 import { authService } from '../../services/auth.service.js'
 import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
+import { useTranslation } from 'react-i18next'
 
 const card = (extra = {}) => ({
   background: C.card, border: `1px solid ${C.border}`,
@@ -30,23 +31,23 @@ const COLORS = [
   { val: '#C88020', label: 'Ámbar'   },
 ]
 
-const Lbl = ({ children }) => (
-  <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 5, marginTop: 16 }}>
-    {children}
-  </label>
-)
-
 export const Perfil = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const user     = useSelector(s => s.auth.user)
 
-  const [form,    setForm]    = useState({ name: '', email: '', color: C.gold, short: '' })
-  const [saving,  setSaving]  = useState(false)
-  const [msgInfo, setMsgInfo] = useState(null)
+  const [form,       setForm]       = useState({ name: '', email: '', color: C.gold, short: '' })
+  const [saving,     setSaving]     = useState(false)
+  const [msgInfo,    setMsgInfo]    = useState(null)
+  const [passForm,   setPassForm]   = useState({ current_password: '', new_password: '', confirm: '' })
+  const [savingPass, setSavingPass] = useState(false)
+  const [msgPass,    setMsgPass]    = useState(null)
 
-  const [passForm,    setPassForm]    = useState({ current_password: '', new_password: '', confirm: '' })
-  const [savingPass,  setSavingPass]  = useState(false)
-  const [msgPass,     setMsgPass]     = useState(null)
+  const Lbl = ({ children }) => (
+    <label style={{ display: 'block', color: C.textS, fontSize: 13, marginBottom: 5, marginTop: 16 }}>
+      {children}
+    </label>
+  )
 
   useEffect(() => {
     authService.getProfile().then(({ data }) => {
@@ -58,20 +59,19 @@ export const Perfil = () => {
     setSaving(true); setMsgInfo(null)
     try {
       const { data } = await authService.updateProfile(form)
-      // Actualizar Redux con los nuevos datos
       dispatch(login({ user: { ...user, ...data }, token: JSON.parse(localStorage.getItem('lexdesk_auth')).token }))
-      setMsgInfo({ ok: true, text: 'Perfil actualizado correctamente' })
+      setMsgInfo({ ok: true, text: t('perfil.perfilActualizado') })
     } catch (err) {
-      setMsgInfo({ ok: false, text: err.response?.data?.error || 'Error guardando perfil' })
+      setMsgInfo({ ok: false, text: err.response?.data?.error || t('perfil.errorGuardando') })
     } finally { setSaving(false) }
   }
 
   const handleChangePassword = async () => {
     setMsgPass(null)
     if (passForm.new_password !== passForm.confirm)
-      return setMsgPass({ ok: false, text: 'Las contraseñas no coinciden' })
+      return setMsgPass({ ok: false, text: t('perfil.passwordsNoCoinciden') })
     if (passForm.new_password.length < 6)
-      return setMsgPass({ ok: false, text: 'La contraseña debe tener al menos 6 caracteres' })
+      return setMsgPass({ ok: false, text: t('perfil.passwordCorta') })
 
     setSavingPass(true)
     try {
@@ -79,10 +79,10 @@ export const Perfil = () => {
         current_password: passForm.current_password,
         new_password:     passForm.new_password,
       })
-      setMsgPass({ ok: true, text: 'Contraseña cambiada correctamente' })
+      setMsgPass({ ok: true, text: t('perfil.passwordCambiada') })
       setPassForm({ current_password: '', new_password: '', confirm: '' })
     } catch (err) {
-      setMsgPass({ ok: false, text: err.response?.data?.error || 'Error cambiando contraseña' })
+      setMsgPass({ ok: false, text: err.response?.data?.error || t('perfil.errorPassword') })
     } finally { setSavingPass(false) }
   }
 
@@ -92,7 +92,7 @@ export const Perfil = () => {
   return (
     <div style={{ maxWidth: 640 }}>
       <div style={{ fontFamily: font.display, fontSize: 28, color: C.text, fontWeight: 600, marginBottom: 24 }}>
-        Mi perfil
+        {t('perfil.titulo')}
       </div>
 
       {/* Avatar preview */}
@@ -112,25 +112,24 @@ export const Perfil = () => {
 
       {/* Datos personales */}
       <div style={{ ...card(), marginBottom: 20 }}>
-        <div style={{ color: C.textS, fontSize: 12, textTransform: 'uppercase',
-          letterSpacing: 1, marginBottom: 4 }}>
-          Información personal
+        <div style={{ color: C.textS, fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
+          {t('perfil.informacionPersonal')}
         </div>
 
-        <Lbl>Nombre completo</Lbl>
+        <Lbl>{t('perfil.nombreCompleto')}</Lbl>
         <input value={form.name} onChange={e => set('name', e.target.value)}
           placeholder="Nombre Apellido" style={inputStyle} />
 
-        <Lbl>Email</Lbl>
+        <Lbl>{t('perfil.email')}</Lbl>
         <input type="email" value={form.email} onChange={e => set('email', e.target.value)}
           placeholder="usuario@lexdesk.es" style={inputStyle} />
 
-        <Lbl>Iniciales (se muestran en el avatar)</Lbl>
+        <Lbl>{t('perfil.iniciales')}</Lbl>
         <input value={form.short} onChange={e => set('short', e.target.value.slice(0,3).toUpperCase())}
           placeholder="MG" maxLength={3}
           style={{ ...inputStyle, width: 80, textTransform: 'uppercase', textAlign: 'center', fontWeight: 700 }} />
 
-        <Lbl>Color de identificación</Lbl>
+        <Lbl>{t('perfil.colorIdentificacion')}</Lbl>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 4 }}>
           {COLORS.map(c => (
             <button key={c.val} onClick={() => set('color', c.val)}
@@ -151,34 +150,32 @@ export const Perfil = () => {
         )}
 
         <div style={{ marginTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={handleSaveInfo} disabled={saving}
-            style={btn(C.gold)}>
-            {saving ? 'Guardando...' : 'Guardar cambios'}
+          <button onClick={handleSaveInfo} disabled={saving} style={btn(C.gold)}>
+            {saving ? t('perfil.guardando') : t('perfil.guardarCambios')}
           </button>
         </div>
       </div>
 
       {/* Cambiar contraseña */}
       <div style={card()}>
-        <div style={{ color: C.textS, fontSize: 12, textTransform: 'uppercase',
-          letterSpacing: 1, marginBottom: 4 }}>
-          Cambiar contraseña
+        <div style={{ color: C.textS, fontSize: 12, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 4 }}>
+          {t('perfil.cambiarPassword')}
         </div>
 
-        <Lbl>Contraseña actual</Lbl>
+        <Lbl>{t('perfil.passwordActual')}</Lbl>
         <input type="password" value={passForm.current_password}
           onChange={e => setPass('current_password', e.target.value)}
           placeholder="••••••••" style={inputStyle} />
 
-        <Lbl>Nueva contraseña</Lbl>
+        <Lbl>{t('perfil.nuevaPassword')}</Lbl>
         <input type="password" value={passForm.new_password}
           onChange={e => setPass('new_password', e.target.value)}
-          placeholder="Mínimo 6 caracteres" style={inputStyle} />
+          placeholder={t('perfil.nuevaPasswordPlaceholder')} style={inputStyle} />
 
-        <Lbl>Confirmar nueva contraseña</Lbl>
+        <Lbl>{t('perfil.confirmarPassword')}</Lbl>
         <input type="password" value={passForm.confirm}
           onChange={e => setPass('confirm', e.target.value)}
-          placeholder="Repite la contraseña" style={inputStyle} />
+          placeholder={t('perfil.confirmarPasswordPlaceholder')} style={inputStyle} />
 
         {msgPass && (
           <div style={{ marginTop: 14, color: msgPass.ok ? C.green : C.red,
@@ -190,9 +187,8 @@ export const Perfil = () => {
         )}
 
         <div style={{ marginTop: 20, display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={handleChangePassword} disabled={savingPass}
-            style={btn(C.gold)}>
-            {savingPass ? 'Guardando...' : 'Cambiar contraseña'}
+          <button onClick={handleChangePassword} disabled={savingPass} style={btn(C.gold)}>
+            {savingPass ? t('perfil.guardando') : t('perfil.cambiarPasswordBtn')}
           </button>
         </div>
       </div>
