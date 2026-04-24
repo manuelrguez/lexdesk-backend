@@ -32,16 +32,18 @@ const Stat = ({ icon: Icon, label, val, sub, col, loading }) => (
 
 export const Dashboard = ({ setActive }) => {
   const user = useSelector(s => s.auth.user)
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()   // ← una sola vez, aquí
+
+  const locale = i18n.language === 'en' ? 'en-GB' : 'es-ES'
+  const today = new Date().toLocaleDateString(locale, {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  })
+
   const [stats,      setStats]      = useState(null)
   const [eventos,    setEventos]    = useState([])
   const [actividad,  setActividad]  = useState({ facturas: [], documentos: [] })
   const [loading,    setLoading]    = useState(true)
   const [refreshing, setRefreshing] = useState(false)
-
-  const today = new Date().toLocaleDateString('es-ES', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-  })
 
   const fetchAll = async (silent = false) => {
     if (!silent) setLoading(true); else setRefreshing(true)
@@ -68,9 +70,10 @@ export const Dashboard = ({ setActive }) => {
     return { label: `${diff}d`, col: C.textM }
   }
 
+  const estadoLabel = { Emitida: t('facturacion.emitida'), Pendiente: t('facturacion.pendiente'), Pagada: t('facturacion.pagada') }
+
   return (
     <div>
-      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
         <div>
           <div style={{ fontFamily: font.display, fontSize: 36, color: C.text, fontWeight: 600 }}>
@@ -89,7 +92,6 @@ export const Dashboard = ({ setActive }) => {
         </button>
       </div>
 
-      {/* Stats */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
         <Stat icon={Users}    label={t('dashboard.clientesActivos')}    loading={loading}
           val={stats?.clientes} col={C.gold}
@@ -103,9 +105,7 @@ export const Dashboard = ({ setActive }) => {
           val={stats?.eventos_proximos} col={C.gold} sub={t('dashboard.proximos30dias')} />
       </div>
 
-      {/* Fila principal */}
       <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-        {/* Próximos eventos */}
         <div style={card({ flex: 2 })}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
             <div style={{ color: C.textS, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -149,7 +149,7 @@ export const Dashboard = ({ setActive }) => {
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
                   <div style={{ color: C.gold, fontSize: 14, fontWeight: 600 }}>
-                    {new Date(ev.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+                    {new Date(ev.fecha + 'T00:00:00').toLocaleDateString(locale, { day: 'numeric', month: 'short' })}
                   </div>
                   <div style={{ color: dias.col, fontSize: 13, marginTop: 2, fontWeight: 600 }}>
                     {dias.label}
@@ -160,7 +160,6 @@ export const Dashboard = ({ setActive }) => {
           })}
         </div>
 
-        {/* Columna derecha */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ ...card(), borderLeft: `3px solid ${C.gold}` }}>
             <div style={{ color: C.textS, fontSize: 13, marginBottom: 10, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -200,9 +199,7 @@ export const Dashboard = ({ setActive }) => {
         </div>
       </div>
 
-      {/* Actividad reciente */}
       <div style={{ display: 'flex', gap: 16 }}>
-        {/* Últimas facturas */}
         <div style={card({ flex: 1 })}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div style={{ color: C.textS, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -230,14 +227,13 @@ export const Dashboard = ({ setActive }) => {
                 <div style={{ color: C.text, fontSize: 15, fontWeight: 600 }}>{fmt(f.total)}</div>
                 <span style={{ fontSize: 12, color: estadoCol[f.estado],
                   background: estadoCol[f.estado] + '22', padding: '2px 8px', borderRadius: 8 }}>
-                  {f.estado}
+                  {estadoLabel[f.estado] || f.estado}
                 </span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Documentos recientes */}
         <div style={card({ flex: 1 })}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
             <div style={{ color: C.textS, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>
@@ -266,14 +262,13 @@ export const Dashboard = ({ setActive }) => {
                 <span style={{ fontSize: 12, color: C.gold, background: C.gold + '22',
                   padding: '2px 8px', borderRadius: 8 }}>{d.tipo}</span>
                 <div style={{ color: C.textM, fontSize: 13, marginTop: 4 }}>
-                  {new Date(d.created_at).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+                  {new Date(d.created_at).toLocaleDateString(locale, { day: 'numeric', month: 'short' })}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Estado del sistema */}
         <div style={card({ flex: 1 })}>
           <div style={{ color: C.textS, fontSize: 13, marginBottom: 16, textTransform: 'uppercase', letterSpacing: 1 }}>
             {t('dashboard.estadoSistema')}

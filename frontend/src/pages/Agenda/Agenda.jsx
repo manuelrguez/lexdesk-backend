@@ -188,7 +188,13 @@ function EventModal({ evento, usuarios, onSave, onClose }) {
 }
 
 export const Agenda = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const locale = i18n.language === 'en' ? 'en-GB' : 'es-ES'
+  const MNAMES = Array.from({ length: 12 }, (_, i) =>
+    new Date(2024, i, 1).toLocaleDateString(locale, { month: 'long' })
+      .replace(/^\w/, c => c.toUpperCase())
+  )
+  const DNAMES = i18n.language === 'en' ? DNAMES_EN : DNAMES_ES
   const now  = new Date()
   const [eventos,       setEventos]  = useState([])
   const [usuarios,      setUsuarios] = useState([])
@@ -380,7 +386,7 @@ export const Agenda = () => {
         <div style={{ width: 380, flexShrink: 0, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           <div style={{ color: C.textS, fontSize: 12, marginBottom: 12, textTransform: 'uppercase', letterSpacing: 1, flexShrink: 0 }}>
             {t('agenda.eventosLabel')} {selDay
-              ? new Date(selDay + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })
+              ? new Date(selDay + 'T00:00:00').toLocaleDateString(locale, { day: 'numeric', month: 'long' })
               : MNAMES[month]}
           </div>
           <div style={{ flex: 1, overflowY: 'auto', paddingRight: 4 }}>
@@ -408,7 +414,7 @@ export const Agenda = () => {
                         <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 6 }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: C.textM, fontSize: 13 }}>
                             <Calendar size={12} />
-                            {new Date(ev.fecha + 'T00:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+                            {new Date(ev.fecha + 'T00:00:00').toLocaleDateString(locale, { day: 'numeric', month: 'short' })}
                           </div>
                           {ev.hora && (
                             <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: C.textM, fontSize: 13 }}>
