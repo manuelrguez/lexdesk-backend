@@ -47,6 +47,12 @@ export const Clientes = () => {
     </label>
   )
 
+  const estadoLabel = {
+    'En curso':  'En curso',
+    'Pendiente': t('common.pendiente') ?? 'Pendiente',
+    'Archivado': 'Archivado',
+  }
+
   useEffect(() => { fetchClientes() }, [])
 
   const fetchClientes = async () => {

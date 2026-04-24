@@ -134,6 +134,11 @@ function FacturaModal({ factura, clientes, onSave, onClose }) {
 
 export const Facturacion = () => {
   const { t } = useTranslation()
+  const estadoLabel = {
+    'Emitida':   t('facturacion.emitida'),
+    'Pendiente': t('facturacion.pendiente'),
+    'Pagada':    t('facturacion.pagada'),
+  }
   const [facturas,  setFacturas]  = useState([])
   const [clientes,  setClientes]  = useState([])
   const [loading,   setLoading]   = useState(true)
@@ -236,7 +241,7 @@ export const Facturacion = () => {
                   border: `1px solid ${filterEst === e ? (estadoCol[e] || C.gold) : C.border}`,
                   background: filterEst === e ? (estadoCol[e] || C.gold) + '22' : 'transparent',
                   color: filterEst === e ? (estadoCol[e] || C.gold) : C.textS }}>
-                {e === 'Todos' ? t('facturacion.todos') : e}
+                {e === 'Todos' ? t('facturacion.todos') : estadoLabel[e] || e}
                 {e !== 'Todos' && <span style={{ marginLeft: 6, opacity: 0.7 }}>({facturas.filter(f => f.estado === e).length})</span>}
               </button>
             ))}
@@ -281,7 +286,7 @@ export const Facturacion = () => {
                     style={{ background: estadoCol[f.estado] + '22', color: estadoCol[f.estado],
                       border: `1px solid ${estadoCol[f.estado]}44`, borderRadius: 20,
                       padding: '4px 10px', fontSize: 12, cursor: 'pointer', outline: 'none', fontWeight: 600 }}>
-                    {ESTADOS.map(e => <option key={e} value={e}>{e}</option>)}
+                    {ESTADOS.map(e => <option key={e} value={e}>{estadoLabel[e] || e}</option>)}
                   </select>
                 </div>
                 <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end' }}>

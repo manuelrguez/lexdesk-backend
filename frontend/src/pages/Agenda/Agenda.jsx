@@ -330,12 +330,12 @@ export const Agenda = () => {
       <div style={{ display: 'flex', gap: 20, flex: 1, minHeight: 0 }}>
         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
           <div style={card({ padding: 0, overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' })}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
               {DNAMES.map(d => (
                 <div key={d} style={{ padding: '11px 0', textAlign: 'center', color: C.textM, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
               ))}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridTemplateRows: 'repeat(6, 1fr)', flex: 1 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gridTemplateRows: 'repeat(6, 1fr)', flex: 1 }}>
               {Array.from({ length: firstDow }).map((_, i) => (
                 <div key={`e${i}`} style={{ borderBottom: `1px solid ${C.border}`, borderRight: `1px solid ${C.border}` }} />
               ))}

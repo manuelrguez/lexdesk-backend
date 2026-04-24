@@ -312,5 +312,10 @@
     "guardando": "Guardando...",
     "error": "Error",
     "exito": "Éxito"
+  },
+    "estadoExpediente": {
+    "enCurso": "En curso",
+    "pendiente": "Pendiente",
+    "archivado": "Archivado"
   }
 }
