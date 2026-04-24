@@ -10,8 +10,9 @@ import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
 import { useTranslation } from 'react-i18next'
 
-const DNAMES_ES = ['L','M','X','J','V','S','D']
-const DNAMES_EN = ['M','T','W','T','F','S','S']
+const MNAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+const DNAMES = ['L','M','X','J','V','S','D']
 
 const card = (extra = {}) => ({
   background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, ...extra,
@@ -336,8 +337,8 @@ export const Agenda = () => {
         <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
           <div style={card({ padding: 0, overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column' })}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', borderBottom: `1px solid ${C.border}`, flexShrink: 0 }}>
-              {DNAMES.map(d => (
-                <div key={d} style={{ padding: '11px 0', textAlign: 'center', color: C.textM, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
+              {DNAMES.map((d, i) => (
+                <div key={i} style={{ padding: '11px 0', textAlign: 'center', color: C.textM, fontSize: 13, textTransform: 'uppercase', letterSpacing: 1 }}>{d}</div>
               ))}
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gridTemplateRows: 'repeat(6, 1fr)', flex: 1 }}>
