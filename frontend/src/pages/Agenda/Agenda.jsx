@@ -10,9 +10,8 @@ import { C } from '../../theme/colors.js'
 import { font } from '../../theme/typography.js'
 import { useTranslation } from 'react-i18next'
 
-const MNAMES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-                'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-const DNAMES = ['L','M','X','J','V','S','D']
+const DNAMES_ES = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom']
+const DNAMES_EN = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
 
 const card = (extra = {}) => ({
   background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, ...extra,
